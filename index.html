@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dashboard Premium Inteligente + SecuCam Multi-Cam</title>
+    <title>Dashboard Premium Inteligente + SecuCam Multi-Cam Pro</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,22 +113,36 @@
         .modal-content { width: 90%; max-width: 550px; background: var(--bg-inner); border: 1px solid var(--border-card); border-radius: 36px; padding: 36px; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15); position: relative; transform: scale(0.9) translateY(40px); transition: transform 0.5s var(--ios-transition); }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
         
-        .modal-overlay.vigilancia-mode .modal-content { max-width: 900px; height: 80vh; padding: 0; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; }
-        .modal-close { position: absolute; top: 24px; right: 24px; background: rgba(0, 0, 0, 0.05); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary); z-index: 1010; }
+        .modal-overlay.vigilancia-mode .modal-content { max-width: 950px; height: 85vh; padding: 0; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; }
+        .modal-close { position: absolute; top: 22px; right: 24px; background: rgba(0, 0, 0, 0.05); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary); z-index: 1010; }
         .modal-overlay.vigilancia-mode .modal-close { background: rgba(255, 255, 255, 0.2); color: #fff; }
         .modal-title { font-size: 32px; font-weight: 700; margin-bottom: 16px; letter-spacing: -1px; }
+
+        /* BARRA DE NAVEGACIÓN SUPERIOR DE CÁMARAS */
+        .ios-camera-navbar { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; background: rgba(20, 20, 25, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 6px 14px; border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.12); z-index: 1006; }
+        .nav-cam-btn { background: none; border: none; color: white; font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 6px 12px; border-radius: 14px; transition: all 0.2s; }
+        .nav-cam-btn:hover { background: rgba(255,255,255,0.12); }
+        .nav-cam-btn.text-btn { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+        .nav-cam-btn.active { background: #0071e3; color: white; }
 
         /* VIEWPORT DE VIDEO REMOTO */
         .video-viewport { width: 100%; flex: 1; position: relative; display: flex; align-items: center; justify-content: center; background: #000; }
         .video-viewport video { width: 100%; height: 100%; object-fit: cover; background: #000; display: none; transition: transform 0.3s var(--ios-transition); transform-origin: center center; }
         .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8a8a99; font-weight: 500; font-size: 14px; text-align: center; padding: 20px; }
 
-        /* CONTROLES CAMARA */
+        /* REJILLA MULTICÁMARA SIMULTÁNEA */
+        .video-viewport.grid-mode { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; padding: 85px 24px 30px 24px; overflow-y: auto; align-content: start; width: 100%; height: 100%; }
+        .grid-cam-box { background: #111116; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 9; position: relative; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .grid-cam-box video { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .grid-cam-label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.65); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; color: white; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.05); z-index: 5; }
+        .grid-cam-status { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #71717a; font-weight: 500; z-index: 2; padding: 10px; text-align: center; }
+
+        /* CONTROLES CAMARA FLOTANTES */
         .ios-camera-controls { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1005; }
         .btn-cam-float { background: rgba(255, 255, 255, 0.12); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
         .btn-cam-float:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.05); }
         .btn-cam-float.active { background: #ffffff; color: #000000; }
-        .btn-cam-config { position: absolute; top: 24px; left: 24px; z-index: 1010; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-cam-config { position: absolute; top: 22px; left: 24px; z-index: 1010; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255,255,255,0.1); }
 
         /* SUBPANEL CONFIGURACION */
         .camera-settings-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14, 14, 20, 0.95); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); z-index: 1008; padding: 40px; display: flex; flex-direction: column; color: white; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ios-transition); overflow-y: auto; }
@@ -208,14 +222,14 @@
                     <div class="carousel-slide">
                         <div class="welcome-text">
                             <h3 id="carouselGreeting">¡Hola!</h3>
-                            <p id="carouselDateString">Cargando fecha del sistema...</p>
+                            <p id="carouselDateString">Cargando fecha...</p>
                         </div>
                         <div class="sistema-time" id="systemTime">00:00</div>
                     </div>
                     <div class="carousel-slide">
                         <div style="display:flex; flex-direction:column; justify-content:center; text-align:left; width:100%; gap:2px;">
                             <h4 style="font-size:11px; color:#ff9500; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Noticias de Paraguay</h4>
-                            <p id="newsTickerDisplay" style="font-size:13px; font-weight:500; color:var(--text-primary); transition: opacity 0.3s;">Sincronizando cables informativos locales...</p>
+                            <p id="newsTickerDisplay" style="font-size:13px; font-weight:500; color:var(--text-primary); transition: opacity 0.3s;">Sincronizando cables informativos...</p>
                         </div>
                     </div>
                     <div class="carousel-slide">
@@ -264,14 +278,14 @@
                     <button class="btn-cam-float" onclick="toggleCameraSettingsPanel(event)" style="width:32px; height:32px;"><iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon></button>
                 </div>
                 <div class="modal-form">
-                    <label>Nombre Identificador (ej. Frente, Oficina)</label>
+                    <label>Nombre Identificador (ej. Sala de Espera, Depósito)</label>
                     <input type="text" id="newCamNameInput" placeholder="Identificador de la zona">
-                    <label>Código Peer DE LA CÁMARA (5 LETRAS)</label>
-                    <input type="text" id="newCamCodeInput" class="cam-code-input" maxlength="5" placeholder="SALAS">
+                    <label>Código Peer de la Cámara (5 letras)</label>
+                    <input type="text" id="newCamCodeInput" class="cam-code-input" maxlength="5" placeholder="PATIO">
                     <button class="modal-btn" style="background:#34c759;" onclick="addNewCameraDevice()">+ Registrar Cámara</button>
                 </div>
                 <div style="margin-top: 24px;">
-                    <label style="font-size:11px; color:#8a8a99; font-weight:600;">Dispositivos Registrados</label>
+                    <label style="font-size:11px; color:#8a8a99; font-weight:600;">Dispositivos Configurados</label>
                     <div class="cam-list" id="registeredCamsList"></div>
                 </div>
             </div>
@@ -279,31 +293,92 @@
     </div>
 
     <script>
-        // --- MOTOR DE ALERTAS Y AUDIO ---
-        let audioCtx = null, alarmInterval = null;
-        function playBeep(f=880, d=0.15) {
+        // --- PITIDOS SUTILES REGULARES DE BOTONES ---
+        function playBeepUi(f=600, d=0.05) {
             try {
-                if(!audioCtx) audioCtx = new(window.AudioContext||window.webkitAudioContext)();
+                let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
                 let o = audioCtx.createOscillator(), g = audioCtx.createGain();
-                o.type='sine'; o.frequency.setValueAtTime(f, audioCtx.currentTime);
-                g.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                o.type = 'sine'; o.frequency.setValueAtTime(f, audioCtx.currentTime);
+                g.gain.setValueAtTime(0.12, audioCtx.currentTime);
                 o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d);
-            }catch(e){}
+            } catch(e){}
         }
-        function triggerAudioAlert(text) {
+
+        // --- SISTEMA UNIFICADO DE AUDIO AVANZADO (ALARMAS + EVENTOS AGENDA) ---
+        let alarmAudioCtx = null;
+        let alarmInterval = null;
+        let isAlarmRunning = false;
+        
+        // Función generadora de notas harmónicas para emular "Morning Joy" sin dependencias de red externa
+        function playMorningJoyNote(freq, startTime, duration) {
+            if (!alarmAudioCtx) return;
+            let o = alarmAudioCtx.createOscillator();
+            let g = alarmAudioCtx.createGain();
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, startTime);
+            g.gain.setValueAtTime(0.0, startTime);
+            g.gain.linearRampToValueAtTime(0.4, startTime + 0.05);
+            g.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+            o.connect(g);
+            g.connect(alarmAudioCtx.destination);
+            o.start(startTime);
+            o.stop(startTime + duration);
+        }
+
+        // Pitido estridente industrial continuo (Sawtooth) exclusivo para los Eventos de la Agenda
+        function playAgendaEstridenteBeep(f=880, d=0.40) {
+            try {
+                if(!alarmAudioCtx) alarmAudioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                let o = alarmAudioCtx.createOscillator(), g = alarmAudioCtx.createGain();
+                o.type = 'sawtooth'; 
+                o.frequency.setValueAtTime(f, alarmAudioCtx.currentTime);
+                g.gain.setValueAtTime(0.8, alarmAudioCtx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.01, alarmAudioCtx.currentTime + d);
+                o.connect(g); g.connect(alarmAudioCtx.destination); o.start(); o.stop(alarmAudioCtx.currentTime + d);
+            } catch(e) {}
+        }
+
+        function triggerAudioAlert(text, mode = 'alarma') {
             document.getElementById('alarmBannerText').textContent = text;
             document.getElementById('alarmBanner').classList.add('active');
+            
             if(alarmInterval) clearInterval(alarmInterval);
-            alarmInterval = setInterval(() => { playBeep(950, 0.2); }, 1000);
-        }
-        function stopActiveAlarm() { document.getElementById('alarmBanner').classList.remove('active'); clearInterval(alarmInterval); }
+            if(!alarmAudioCtx) alarmAudioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            isAlarmRunning = true;
 
-        // --- SISTEMA AUTOMÁTICO DE NOTICIAS DE PARAGUAY ---
+            if (mode === 'agenda') {
+                // Patrón de Doble Pitido Estridente Continuo para la Agenda
+                alarmInterval = setInterval(() => { 
+                    if (!isAlarmRunning) return;
+                    playAgendaEstridenteBeep(980, 0.35); 
+                    setTimeout(() => { if (isAlarmRunning) playAgendaEstridenteBeep(850, 0.25); }, 400); 
+                }, 1200);
+            } else {
+                // Melodía Flautada Estilo Reloj Despertador "Morning Joy" para las Alarmas
+                alarmInterval = setInterval(() => {
+                    if (!isAlarmRunning) return;
+                    let now = alarmAudioCtx.currentTime;
+                    // Secuencia melódica cíclica ascendente brillante e inspiradora
+                    playMorningJoyNote(523.25, now, 0.25);       // C5
+                    playMorningJoyNote(659.25, now + 0.2, 0.25); // E5
+                    playMorningJoyNote(783.99, now + 0.4, 0.25); // G5
+                    playMorningJoyNote(1046.50, now + 0.6, 0.4); // C6
+                }, 1400);
+            }
+        }
+
+        function stopActiveAlarm() { 
+            isAlarmRunning = false;
+            document.getElementById('alarmBanner').classList.remove('active'); 
+            if(alarmInterval) clearInterval(alarmInterval); 
+        }
+
+        // --- TICKER DINÁMICO DE NOTICIAS DE PARAGUAY ---
         const paraguayNews = [
             "Dirección de Meteorología prevé jornadas cálidas con humedad elevada en Central.",
-            "ANDE continúa trabajos de mantenimiento preventivo y cambio de conductores en líneas de media tensión.",
+            "ANDE continúa trabajos de mantenimiento preventivo en líneas de media tensión.",
             "MOPC anuncia optimización de viaductos y desvíos inteligentes en accesos a Gran Asunción.",
-            "Nuevas tecnologías WebRTC robustecen los esquemas de seguridad P2P de un solo salto en el país."
+            "Tecnología WebRTC robustece los esquemas de videovigilancia P2P de un solo salto."
         ];
         let currentNewsIdx = 0;
         function rotateParaguayNews() {
@@ -319,7 +394,7 @@
         }
         setInterval(rotateParaguayNews, 5000);
 
-        // --- MANEJO DE CARRUSEL ---
+        // --- AUTOMATIZACIÓN DEL CARRUSEL (SLIDES) ---
         const track = document.getElementById('carouselTrack');
         let currentSlide = 0;
         function moveCarousel(idx) { 
@@ -329,92 +404,195 @@
         }
         setInterval(() => { if(track) moveCarousel((currentSlide+1)%3); }, 7000);
 
-        // --- CORE WEBRTC SECUCAM ---
-        let peerInstance = null, dataConn = null, activeCall = null;
+        // --- CORE WEBRTC MULTI-CAM SIMULTÁNEO ---
+        let peerInstance = null;
+        let activeDataConns = [];
+        let activeCalls = [];
         let cameraDevices = JSON.parse(localStorage.getItem('secucam_devs')) || [];
         let selectedCamId = localStorage.getItem('secucam_active_id') || '';
+        let isGridView = false; 
         let currentZoom = 1;
 
         function initReceiverPeer() {
             if (peerInstance && !peerInstance.destroyed) {
-                attemptCameraConnection();
+                connectSurveillanceFlow();
                 return;
             }
             peerInstance = new Peer();
             peerInstance.on('open', (id) => {
-                console.log('Visor asignado con Hash Temporal P2P:', id);
-                attemptCameraConnection();
+                console.log('Visor ID WebRTC:', id);
+                connectSurveillanceFlow();
             });
             peerInstance.on('call', (call) => {
-                activeCall = call;
+                activeCalls.push(call);
                 call.answer();
                 call.on('stream', (remoteStream) => {
-                    const video = document.getElementById('remoteWebVideo');
-                    const placeholder = document.getElementById('videoCanvasPlaceholder');
-                    if (video) {
-                        video.srcObject = remoteStream;
-                        video.style.display = 'block';
-                        if (placeholder) placeholder.style.display = 'none';
-                        updateCamStatusText("Transmisión en Vivo Operativa");
+                    const callerCode = call.peer.replace('secucam-', '').toLowerCase();
+                    
+                    if (isGridView) {
+                        const box = document.getElementById(`gridBox-${callerCode}`);
+                        if (box) {
+                            const video = box.querySelector('video');
+                            video.srcObject = remoteStream;
+                            video.style.display = 'block';
+                            const statusTxt = document.getElementById(`gridStatus-${callerCode}`);
+                            if(statusTxt) statusTxt.style.display = 'none';
+                        }
+                    } else {
+                        const activeDevice = cameraDevices.find(c => c.id === selectedCamId);
+                        if (activeDevice && activeDevice.code.toLowerCase() === callerCode) {
+                            const video = document.getElementById('remoteWebVideo');
+                            const placeholder = document.getElementById('videoCanvasPlaceholder');
+                            if (video) {
+                                video.srcObject = remoteStream;
+                                video.style.display = 'block';
+                                if (placeholder) placeholder.style.display = 'none';
+                                updateCamStatusText("Transmisión en Vivo Operativa");
+                            }
+                        }
                     }
                 });
-                call.on('close', () => { resetVideoUI("Cámara desconectada."); });
-            });
-            peerInstance.on('error', (err) => {
-                if(err.type === 'peer-unavailable') updateCamStatusText("La cámara está apagada o no existe.");
-                else updateCamStatusText(`Estado de red: ${err.type}`);
             });
         }
 
-        function attemptCameraConnection() {
-            if (!peerInstance || peerInstance.destroyed) return;
-            const activeDevice = cameraDevices.find(c => c.id === selectedCamId);
-            if (!activeDevice) {
-                updateCamStatusText("No hay cámaras configuradas. Presioná el engranaje superior.");
-                return;
-            }
-            const targetPeerId = "secucam-" + activeDevice.code.toLowerCase().trim();
-            updateCamStatusText(`Conectando por datos a [${activeDevice.name}]...`);
+        function closeAllSurveillanceConnections() {
+            activeDataConns.forEach(c => { if(c.open) c.close(); });
+            activeDataConns = [];
+            activeCalls.forEach(c => c.close());
+            activeCalls = [];
+        }
 
-            if (dataConn) { dataConn.close(); dataConn = null; }
-            if (activeCall) { activeCall.close(); activeCall = null; }
+        function initSurveillanceView() {
+            closeAllSurveillanceConnections();
+            const viewport = document.getElementById('videoViewport');
+            if (!viewport) return;
 
-            dataConn = peerInstance.connect(targetPeerId, { reliable: true });
-            dataConn.on('open', () => {
-                updateCamStatusText("Enlazado por datos. Solicitando stream multimedia...");
-                dataConn.send({ type: 'solicitud-stream', visorId: peerInstance.id });
-            });
-            dataConn.on('data', (data) => {
-                if (data && data.type === 'alert') {
-                    triggerAudioAlert(`🚨 MOVIMIENTO: ${data.message}`);
+            if (isGridView) {
+                viewport.classList.add('grid-mode');
+                if (cameraDevices.length === 0) {
+                    viewport.innerHTML = '<div class="video-placeholder"><span>No hay cámaras registradas. Tocá el engranaje.</span></div>';
+                    return;
                 }
-            });
-            dataConn.on('close', () => { resetVideoUI("Canal de enlace cerrado."); });
+                let gridHtml = '';
+                cameraDevices.forEach(cam => {
+                    gridHtml += `
+                        <div class="grid-cam-box" id="gridBox-${cam.code.toLowerCase()}">
+                            <div class="grid-cam-label">${cam.name}</div>
+                            <div class="grid-cam-status" id="gridStatus-${cam.code.toLowerCase()}">Conectando P2P...</div>
+                            <video autoplay playsinline muted></video>
+                        </div>`;
+                });
+                viewport.innerHTML = gridHtml;
+            } else {
+                viewport.classList.remove('grid-mode');
+                const activeDevice = cameraDevices.find(c => c.id === selectedCamId);
+                const nameDisplay = activeDevice ? activeDevice.name : 'SecuCam';
+                
+                viewport.innerHTML = `
+                    <video id="remoteWebVideo" autoplay playsinline></video>
+                    <div class="video-placeholder" id="videoCanvasPlaceholder">
+                        <iconify-icon icon="fluent:video-clip-24-filled" style="font-size:44px; margin-bottom:12px; color:#ff9500;"></iconify-icon>
+                        <span id="videoStatusTxt">Sincronizando canal...</span>
+                        <span style="font-size:11px; opacity:0.6; margin-top:4px;">Cámara actual: ${nameDisplay}</span>
+                    </div>`;
+            }
+            initReceiverPeer();
+        }
+
+        function connectSurveillanceFlow() {
+            if (!peerInstance || peerInstance.destroyed) return;
+
+            if (isGridView) {
+                cameraDevices.forEach(cam => {
+                    const targetPeerId = "secucam-" + cam.code.toLowerCase().trim();
+                    const conn = peerInstance.connect(targetPeerId, { reliable: true });
+                    activeDataConns.push(conn);
+
+                    conn.on('open', () => {
+                        const statusTxt = document.getElementById(`gridStatus-${cam.code.toLowerCase()}`);
+                        if(statusTxt) statusTxt.textContent = "Enlazado. Solicitando video...";
+                        conn.send({ type: 'solicitud-stream', visorId: peerInstance.id });
+                    });
+                    conn.on('data', (data) => {
+                        if (data && data.type === 'alert') triggerAudioAlert(`🚨 MOVIMIENTO [${cam.name}]: ${data.message}`, 'alarma');
+                    });
+                    conn.on('error', () => {
+                        const statusTxt = document.getElementById(`gridStatus-${cam.code.toLowerCase()}`);
+                        if(statusTxt) statusTxt.textContent = "Cámara Desconectada";
+                    });
+                });
+            } else {
+                const activeDevice = cameraDevices.find(c => c.id === selectedCamId);
+                if (!activeDevice) {
+                    updateCamStatusText("No hay cámaras configuradas. Presioná el engranaje superior.");
+                    return;
+                }
+                const targetPeerId = "secucam-" + activeDevice.code.toLowerCase().trim();
+                updateCamStatusText(`Conectando a [${activeDevice.name}]...`);
+
+                const conn = peerInstance.connect(targetPeerId, { reliable: true });
+                activeDataConns.push(conn);
+
+                conn.on('open', () => {
+                    updateCamStatusText("Enlazado. Solicitando stream multimedia...");
+                    conn.send({ type: 'solicitud-stream', visorId: peerInstance.id });
+                });
+                conn.on('data', (data) => {
+                    if (data && data.type === 'alert') triggerAudioAlert(`🚨 MOVIMIENTO: ${data.message}`, 'alarma');
+                });
+                conn.on('error', (err) => { updateCamStatusText("Dispositivo offline o código incorrecto."); });
+            }
         }
 
         function updateCamStatusText(text) { const el = document.getElementById('videoStatusTxt'); if(el) el.textContent = text; }
-        function resetVideoUI(msg) {
-            const video = document.getElementById('remoteWebVideo');
-            const placeholder = document.getElementById('videoCanvasPlaceholder');
-            if (video) { video.srcObject = null; video.style.display = 'none'; }
-            if (placeholder) placeholder.style.display = 'flex';
-            updateCamStatusText(msg);
+
+        function navigateCamera(direction) {
+            if (cameraDevices.length === 0) return;
+            isGridView = false;
+            
+            const gridBtn = document.getElementById('btnGridToggle');
+            if (gridBtn) gridBtn.classList.remove('active');
+            const singleControls = document.getElementById('singleCamControls');
+            if (singleControls) singleControls.style.display = 'flex';
+
+            let currentIndex = cameraDevices.findIndex(c => c.id === selectedCamId);
+            if (currentIndex === -1) currentIndex = 0;
+
+            let nextIndex = (currentIndex + direction + cameraDevices.length) % cameraDevices.length;
+            selectedCamId = cameraDevices[nextIndex].id;
+            localStorage.setItem('secucam_active_id', selectedCamId);
+
+            initSurveillanceView();
+        }
+
+        function toggleGridViewMode() {
+            if (cameraDevices.length === 0) return alert("Registrá cámaras primero usando el botón de ajustes (engranaje).");
+            isGridView = !isGridView;
+            
+            const gridBtn = document.getElementById('btnGridToggle');
+            if (gridBtn) gridBtn.classList.toggle('active', isGridView);
+            
+            const singleControls = document.getElementById('singleCamControls');
+            if (singleControls) singleControls.style.display = isGridView ? 'none' : 'flex';
+
+            currentZoom = 1;
+            initSurveillanceView();
         }
 
         function sendTorchCommand(e) {
             e.stopPropagation(); const btn = document.getElementById('btnTorch'); btn.classList.toggle('active'); const status = btn.classList.contains('active');
-            if(dataConn && dataConn.open) dataConn.send({ type: 'torch', value: status });
-            playBeep(status ? 900 : 600, 0.05);
+            activeDataConns.forEach(conn => { if(conn.open) conn.send({ type: 'torch', value: status }); });
+            playBeepUi(status ? 900 : 600, 0.05);
         }
         function toggleAudioTrack(e) {
             e.stopPropagation(); const btn = document.getElementById('btnAudioToggle'); const video = document.getElementById('remoteWebVideo'); if(!video) return;
             btn.classList.toggle('active'); video.muted = !video.muted;
             btn.querySelector('iconify-icon').setAttribute('icon', video.muted ? 'fluent:speaker-mute-24-filled' : 'fluent:speaker-2-24-filled');
-            playBeep(440, 0.05);
+            playBeepUi(440, 0.05);
         }
-        function executeZoom(val, e) { e.stopPropagation(); currentZoom = Math.max(1, Math.min(4, currentZoom + val)); const video = document.getElementById('remoteWebVideo'); if(video) video.style.transform = `scale(${currentZoom})`; playBeep(700, 0.03); }
+        function executeZoom(val, e) { e.stopPropagation(); currentZoom = Math.max(1, Math.min(4, currentZoom + val)); const video = document.getElementById('remoteWebVideo'); if(video) video.style.transform = `scale(${currentZoom})`; playBeepUi(700, 0.03); }
 
-        // --- NAVEGACIÓN DE MODALES ---
+        // --- SISTEMA DE VENTANAS MODALES ---
         const modalOverlay = document.getElementById('modalOverlay');
         const modalTitle = document.getElementById('modalTitle');
         const dynamicBody = document.getElementById('modalDynamicBody');
@@ -430,37 +608,46 @@
             if (type === 'vigilancia') {
                 modalOverlay.classList.add('vigilancia-mode');
                 camConfigBtn.style.display = 'flex';
+                isGridView = false;
                 currentZoom = 1;
+                
                 dynamicBody.innerHTML = `
-                    <div class="video-viewport">
-                        <video id="remoteWebVideo" autoplay playsinline></video>
-                        <div class="video-placeholder" id="videoCanvasPlaceholder">
-                            <iconify-icon icon="fluent:video-clip-24-filled" style="font-size:44px; margin-bottom:12px; color:#ff9500;"></iconify-icon>
-                            <span id="videoStatusTxt">Inicializando Red de Enlace...</span>
-                        </div>
-                        <div class="ios-camera-controls">
-                            <button class="btn-cam-float" id="btnTorch" onclick="sendTorchCommand(event)"><iconify-icon icon="fluent:flashlight-24-filled"></iconify-icon></button>
-                            <button class="btn-cam-float" id="btnAudioToggle" onclick="toggleAudioTrack(event)"><iconify-icon icon="fluent:speaker-2-24-filled"></iconify-icon></button>
-                            <button class="btn-cam-float" onclick="executeZoom(0.25, event)"><iconify-icon icon="fluent:zoom-in-24-filled"></iconify-icon></button>
-                            <button class="btn-cam-float" onclick="executeZoom(-0.25, event)"><iconify-icon icon="fluent:zoom-out-24-filled"></iconify-icon></button>
-                        </div>
+                    <div class="ios-camera-navbar">
+                        <button class="nav-cam-btn" onclick="navigateCamera(-1)">
+                            <iconify-icon icon="fluent:chevron-left-24-filled"></iconify-icon>
+                        </button>
+                        <button class="nav-cam-btn text-btn" id="btnGridToggle" onclick="toggleGridViewMode()">
+                            <iconify-icon icon="fluent:grid-20-filled"></iconify-icon> MULTI-CAM
+                        </button>
+                        <button class="nav-cam-btn" onclick="navigateCamera(1)">
+                            <iconify-icon icon="fluent:chevron-right-24-filled"></iconify-icon>
+                        </button>
+                    </div>
+                    
+                    <div class="video-viewport" id="videoViewport"></div>
+                    
+                    <div class="ios-camera-controls" id="singleCamControls">
+                        <button class="btn-cam-float" id="btnTorch" onclick="sendTorchCommand(event)"><iconify-icon icon="fluent:flashlight-24-filled"></iconify-icon></button>
+                        <button class="btn-cam-float" id="btnAudioToggle" onclick="toggleAudioTrack(event)"><iconify-icon icon="fluent:speaker-2-24-filled"></iconify-icon></button>
+                        <button class="btn-cam-float" onclick="executeZoom(0.25, event)"><iconify-icon icon="fluent:zoom-in-24-filled"></iconify-icon></button>
+                        <button class="btn-cam-float" onclick="executeZoom(-0.25, event)"><iconify-icon icon="fluent:zoom-out-24-filled"></iconify-icon></button>
                     </div>`;
-                initReceiverPeer();
+                    
+                initSurveillanceView();
                 renderRegisteredCameras();
             } else if (type === 'alarma') {
-                modalTitle.textContent = "Alarmas Programadas"; buildAlarmsManager();
+                modalTitle.textContent = "Alarmas Operativas"; buildAlarmsManager();
             } else if (type === 'tareas') {
                 modalTitle.textContent = "Gestión de Agenda"; buildTasksManager();
             } else {
-                modalTitle.textContent = "Centro Informativo";
-                dynamicBody.innerHTML = `<p style="font-size:15px; color:var(--text-secondary); line-height:1.6;">Nodos operativos sin alertas operativas pendientes en Ñemby, Paraguay.</p>`;
+                modalTitle.textContent = "Centro Operativo";
+                dynamicBody.innerHTML = `<p style="font-size:15px; color:var(--text-secondary); line-height:1.6;">Nodos en línea. Sin anomalías meteorológicas o técnicas reportadas en la ciudad de Ñemby.</p>`;
             }
         }
 
         function closeModal() { 
             modalOverlay.classList.remove('active'); 
-            if(activeCall) { activeCall.close(); activeCall = null; }
-            if(dataConn) { dataConn.close(); dataConn = null; }
+            closeAllSurveillanceConnections();
         }
 
         function toggleCameraSettingsPanel(e) { e.stopPropagation(); cameraSettingsPanel.classList.toggle('active'); }
@@ -468,7 +655,7 @@
         function addNewCameraDevice() {
             const name = document.getElementById('newCamNameInput').value.trim();
             const code = document.getElementById('newCamCodeInput').value.trim().toUpperCase();
-            if(!name || code.length < 3) return alert("Por favor introduce los datos completos.");
+            if(!name || code.length < 3) return alert("Completá los campos correctamente.");
 
             const item = { id: 'cam_' + Date.now(), name, code };
             cameraDevices.push(item);
@@ -481,17 +668,18 @@
             
             renderRegisteredCameras();
             cameraSettingsPanel.classList.remove('active');
-            attemptCameraConnection();
+            isGridView = false;
+            initSurveillanceView();
         }
 
         function renderRegisteredCameras() {
             const container = document.getElementById('registeredCamsList'); if(!container) return; container.innerHTML = '';
-            if(cameraDevices.length === 0) { container.innerHTML = '<p style="font-size:12px; color:#8a8a99; text-align:center;">Ninguna cámara enlazada.</p>'; return; }
+            if(cameraDevices.length === 0) { container.innerHTML = '<p style="font-size:12px; color:#8a8a99; text-align:center;">Ninguna cámara registrada en este nodo.</p>'; return; }
             cameraDevices.forEach(cam => {
                 const active = cam.id === selectedCamId;
                 const div = document.createElement('div'); div.className = `cam-item ${active ? 'selected' : ''}`;
-                div.onclick = () => { selectedCamId = cam.id; localStorage.setItem('secucam_active_id', selectedCamId); renderRegisteredCameras(); cameraSettingsPanel.classList.remove('active'); attemptCameraConnection(); };
-                div.innerHTML = `<div class="cam-item-info"><h5>${cam.name}</h5><p>Código: ${cam.code}</p></div><button class="btn-delete" onclick="deleteCamera('${cam.id}', event)"><iconify-icon icon="fluent:delete-16-filled"></iconify-icon></button>`;
+                div.onclick = () => { selectedCamId = cam.id; localStorage.setItem('secucam_active_id', selectedCamId); isGridView = false; renderRegisteredCameras(); cameraSettingsPanel.classList.remove('active'); initSurveillanceView(); };
+                div.innerHTML = `<div class="cam-item-info"><h5>${cam.name}</h5><p>ID Peer P2P: secucam-${cam.code.toLowerCase()}</p></div><button class="btn-delete" onclick="deleteCamera('${cam.id}', event)"><iconify-icon icon="fluent:delete-16-filled"></iconify-icon></button>`;
                 container.appendChild(div);
             });
         }
@@ -501,14 +689,13 @@
             localStorage.setItem('secucam_devs', JSON.stringify(cameraDevices));
             if(selectedCamId === id) selectedCamId = cameraDevices.length > 0 ? cameraDevices[0].id : '';
             localStorage.setItem('secucam_active_id', selectedCamId);
-            renderRegisteredCameras(); if(selectedCamId) attemptCameraConnection(); else resetVideoUI("Agrega una cámara para iniciar.");
+            renderRegisteredCameras(); isGridView = false; initSurveillanceView();
         }
 
-        // --- PERSISTENCIA Y ADICIÓN CON FECHA Y HORA (ALARMAS Y TAREAS) ---
+        // --- PERSISTENCIA (ALARMAS Y AGENDA DE TAREAS) ---
         let alarms = JSON.parse(localStorage.getItem('sys_alarms')) || [];
         let tasks = JSON.parse(localStorage.getItem('sys_tasks')) || [];
-        
-        let chosenSelectedDate = new Date().toISOString().split('T')[0]; // Sincronizador Base YYYY-MM-DD
+        let chosenSelectedDate = new Date().toISOString().split('T')[0];
 
         function saveDashboardData() { 
             localStorage.setItem('sys_alarms', JSON.stringify(alarms)); 
@@ -517,13 +704,11 @@
             renderCalendar();
         }
 
-        // --- TICKER CENTRAL DE TIEMPO, FECHAS Y ENGINE AUTOMÁTICO DE TEMAS ---
+        // --- ENGINE TIEMPO REAL CON AUTO TEMA ---
         let userManualThemeState = localStorage.getItem('manual_theme_active') === 'true';
 
         setInterval(() => {
             const now = new Date();
-            
-            // Reloj e hilo de fecha del primer slide del carrusel
             const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             document.getElementById('systemTime').textContent = timeStr;
             
@@ -531,54 +716,54 @@
             let dateStrPy = now.toLocaleDateString('es-PY', options);
             document.getElementById('carouselDateString').textContent = dateStrPy.charAt(0).toUpperCase() + dateStrPy.slice(1);
 
-            // Verificador inteligente de Tema (Paraguay Time Base)
             if(!userManualThemeState) {
                 const hour = now.getHours();
-                if(hour >= 18 || hour < 6) {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                } else {
-                    document.documentElement.removeAttribute('data-theme');
-                }
+                if(hour >= 18 || hour < 6) document.documentElement.setAttribute('data-theme', 'dark');
+                else document.documentElement.removeAttribute('data-theme');
             }
 
-            // Despachador estricto de alarmas filtrando Fecha y Hora exacta
             const currentDateStr = now.toISOString().split('T')[0];
+            
+            // Verificación cruzada exacta de Alarmas (Reproduce "Morning Joy")
             alarms.forEach(a => {
                 if (a.date === currentDateStr && a.time === timeStr && !a.triggered) { 
-                    triggerAudioAlert(`⏰ ALARMA: ${a.label}`); 
+                    triggerAudioAlert(`⏰ ALARMA: ${a.label}`, 'alarma'); 
                     a.triggered = true; 
                     saveDashboardData(); 
                 }
-                if (a.time !== timeStr || a.date !== currentDateStr) {
-                    a.triggered = false; 
-                }
+                if (a.time !== timeStr || a.date !== currentDateStr) a.triggered = false;
             });
+
+            // Verificación cruzada exacta de Eventos Agendados (Reproduce el patrón Estridente)
+            tasks.forEach(t => {
+                if (t.date === currentDateStr && t.time === timeStr && !t.triggered) {
+                    triggerAudioAlert(`📅 AGENDA: ${t.text}`, 'agenda');
+                    t.triggered = true;
+                    saveDashboardData();
+                }
+                if (t.time !== timeStr || t.date !== currentDateStr) t.triggered = false;
+            });
+
         }, 1000);
 
-        // --- GESTOR COMPLETO DE ALARMAS CON FECHA Y HORA ---
+        // --- CONTROLADORES DE ALARMAS ---
         function buildAlarmsManager() {
             dynamicBody.innerHTML = `
                 <div class="modal-form">
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                        <div>
-                            <label>Fecha</label>
-                            <input type="date" id="newAlmDate" value="${chosenSelectedDate}">
-                        </div>
-                        <div>
-                            <label>Hora</label>
-                            <input type="time" id="newAlmTime" value="08:00">
-                        </div>
+                        <div><label>Fecha</label><input type="date" id="newAlmDate" value="${chosenSelectedDate}"></div>
+                        <div><label>Hora</label><input type="time" id="newAlmTime" value="08:00"></div>
                     </div>
-                    <label>Nota de Alerta</label>
-                    <input type="text" id="newAlmLabel" placeholder="Ej. Encendido de Motores">
-                    <button class="modal-btn" onclick="addAlm()">Añadir Alarma Permanente</button>
+                    <label>Identificador de la Alerta (Morning Joy)</label>
+                    <input type="text" id="newAlmLabel" placeholder="Ej. Cambio de Guardia / Monitoreo">
+                    <button class="modal-btn" onclick="addAlm()">Establecer Alarma</button>
                 </div>
                 <div class="items-list" id="mAlms"></div>`;
             renderAlms();
         }
         function renderAlms() {
             const c = document.getElementById('mAlms'); if(!c) return; c.innerHTML = '';
-            if(alarms.length === 0) { c.innerHTML = '<p style="font-size:12px; color:var(--text-secondary); text-align:center;">No hay alertas en cola.</p>'; return; }
+            if(alarms.length === 0) { c.innerHTML = '<p style="font-size:12px; color:var(--text-secondary); text-align:center;">No hay alarmas pendientes.</p>'; return; }
             alarms.forEach((a,i) => { 
                 const d = document.createElement('div'); d.className='list-entry'; 
                 d.innerHTML=`<div><h5>📅 ${a.date} | ⏰ ${a.time} hs</h5><p>${a.label}</p></div><button class="btn-delete" onclick="alarms.splice(${i},1);saveDashboardData();renderAlms();"><iconify-icon icon="fluent:delete-24-filled"></iconify-icon></button>`; 
@@ -586,29 +771,21 @@
             });
         }
         function addAlm() { 
-            const d=document.getElementById('newAlmDate').value;
-            const t=document.getElementById('newAlmTime').value;
-            const l=document.getElementById('newAlmLabel').value || 'Alarma'; 
+            const d=document.getElementById('newAlmDate').value; const t=document.getElementById('newAlmTime').value; const l=document.getElementById('newAlmLabel').value || 'Alarma'; 
             if(d && t) { alarms.push({date:d, time:t, label:l, triggered:false}); saveDashboardData(); renderAlms(); } 
         }
 
-        // --- GESTOR COMPLETO DE TAREAS CON FECHA, HORA Y SINCRONIZACIÓN ---
+        // --- CONTROLADORES DE AGENDA / EVENTOS ---
         function buildTasksManager() {
             dynamicBody.innerHTML = `
                 <div class="modal-form">
-                    <label>Descripción del Pendiente</label>
-                    <input type="text" id="newTskText" placeholder="Ej. Patrullaje de perímetro norte">
+                    <label>Descripción del Evento (Patrón Estridente)</label>
+                    <input type="text" id="newTskText" placeholder="Ej. Verificación de cerraduras perimetrales">
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                        <div>
-                            <label>Fecha Evento</label>
-                            <input type="date" id="newTskDate" value="${chosenSelectedDate}">
-                        </div>
-                        <div>
-                            <label>Hora</label>
-                            <input type="time" id="newTskTime" value="12:00">
-                        </div>
+                        <div><label>Fecha</label><input type="date" id="newTskDate" value="${chosenSelectedDate}"></div>
+                        <div><label>Hora de Inicio</label><input type="time" id="newTskTime" value="12:00"></div>
                     </div>
-                    <button class="modal-btn" onclick="addTsk()">Registrar en Agenda</button>
+                    <button class="modal-btn" onclick="addTsk()">Registrar Evento</button>
                 </div>
                 <div class="items-list" id="mTsk"></div>`;
             renderTsks();
@@ -623,24 +800,14 @@
             });
         }
         function addTsk() { 
-            const txt = document.getElementById('newTskText').value; 
-            const date = document.getElementById('newTskDate').value;
-            const time = document.getElementById('newTskTime').value;
-            if(txt && date && time) { 
-                tasks.push({text:txt, date:date, time:time}); 
-                chosenSelectedDate = date; 
-                saveDashboardData(); 
-                renderTsks(); 
-            } 
+            const txt = document.getElementById('newTskText').value; const date = document.getElementById('newTskDate').value; const time = document.getElementById('newTskTime').value;
+            if(txt && date && time) { tasks.push({text:txt, date:date, time:time, triggered:false}); chosenSelectedDate = date; saveDashboardData(); renderTsks(); } 
         }
 
         function renderMainTasks() { 
             const tl = document.getElementById('mainTasksTimeline'); if(!tl) return; tl.innerHTML = ''; 
             let filteredTasks = tasks.filter(t => t.date === chosenSelectedDate);
-            if(filteredTasks.length === 0){ 
-                tl.innerHTML = `<div class="tarea-bubble" style="color:var(--text-secondary);">Sin tareas para el: ${chosenSelectedDate}</div>`; 
-                return; 
-            } 
+            if(filteredTasks.length === 0){ tl.innerHTML = `<div class="tarea-bubble" style="color:var(--text-secondary); font-size:12px;">No hay eventos agendados para el: ${chosenSelectedDate}</div>`; return; } 
             filteredTasks.forEach(t=>{ 
                 const r=document.createElement('div'); r.className='tarea-row'; 
                 r.innerHTML=`<span class="tarea-node"></span><div class="tarea-bubble"><strong>${t.time} hs</strong> — ${t.text}</div>`; 
@@ -648,20 +815,16 @@
             }); 
         }
 
-        // --- ENGINE DEL TEMA CON CAPACIDAD ANULADORA MANUAL ---
+        // --- CONTROLES MANUALES ---
         function toggleThemeManual() { 
-            userManualThemeState = true; 
-            localStorage.setItem('manual_theme_active', 'true');
+            userManualThemeState = true; localStorage.setItem('manual_theme_active', 'true');
             const cur = document.documentElement.getAttribute('data-theme'); 
-            if(cur==='dark') {
-                document.documentElement.removeAttribute('data-theme'); 
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark'); 
-            }
+            if(cur==='dark') document.documentElement.removeAttribute('data-theme'); 
+            else document.documentElement.setAttribute('data-theme', 'dark'); 
         }
-        function toggleControl(el) { el.classList.toggle('active'); playBeep(600, 0.05); }
+        function toggleControl(el) { el.classList.toggle('active'); playBeepUi(600, 0.05); }
 
-        // --- CALENDARIO SINCRONIZADO E INTERACTIVO ---
+        // --- RENDER DE MATRIZ DE CALENDARIO COMPLETA ---
         let cDate = new Date();
         function renderCalendar() {
             const y = cDate.getFullYear(), m = cDate.getMonth(), daysCont = document.getElementById('calendarDays'); if(!daysCont)return; daysCont.innerHTML = '';
@@ -669,25 +832,14 @@
             const dim = new Date(y, m + 1, 0).getDate();
             
             for (let i = 0; i < fIdx; i++) { const d = document.createElement('div'); d.className = 'day other-month'; daysCont.appendChild(d); }
-            
             for (let i = 1; i <= dim; i++) { 
                 const d = document.createElement('div'); d.className = 'day'; d.textContent = i; 
                 let buildFullStr = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
                 
-                let hasTasksOnThisDate = tasks.some(t => t.date === buildFullStr);
-                if(hasTasksOnThisDate) d.classList.add('has-tasks');
+                if(tasks.some(t => t.date === buildFullStr)) d.classList.add('has-tasks');
+                if(buildFullStr === chosenSelectedDate) d.classList.add('selected');
                 
-                if(buildFullStr === chosenSelectedDate) {
-                    d.classList.add('selected');
-                }
-                
-                d.onclick = (e) => {
-                    e.stopPropagation();
-                    chosenSelectedDate = buildFullStr;
-                    renderCalendar();
-                    renderMainTasks();
-                };
-                
+                d.onclick = (e) => { e.stopPropagation(); chosenSelectedDate = buildFullStr; renderCalendar(); renderMainTasks(); };
                 daysCont.appendChild(d); 
             }
             const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']; 
