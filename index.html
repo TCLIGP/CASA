@@ -8,9 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
     <style>
@@ -19,7 +17,6 @@
             --ios-radius: 28px;
             --ios-transition: cubic-bezier(0.25, 1, 0.5, 1);
             
-            /* Paleta Modo Claro */
             --bg-body: linear-gradient(135deg, #e3edff 0%, #f9faff 100%);
             --bg-card: rgba(255, 255, 255, 0.55);
             --bg-card-hover: rgba(255, 255, 255, 0.75);
@@ -32,7 +29,6 @@
             --shadow-color: rgba(31, 38, 135, 0.04);
         }
 
-        /* Paleta Modo Oscuro */
         [data-theme="dark"] {
             --bg-body: linear-gradient(135deg, #121214 0%, #1c1c1e 100%);
             --bg-card: rgba(28, 28, 30, 0.6);
@@ -46,135 +42,61 @@
             --shadow-color: rgba(0, 0, 0, 0.4);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { background: var(--bg-body); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: var(--text-primary); transition: background 0.5s ease; }
 
-        body {
-            background: var(--bg-body);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: var(--text-primary);
-            transition: background 0.5s ease;
-        }
+        .dashboard-container { width: 100%; max-width: 1100px; display: grid; grid-template-columns: 38% 59%; gap: 3%; }
+        .widgets-column { display: flex; flex-direction: column; gap: 24px; }
 
-        .dashboard-container {
-            width: 100%;
-            max-width: 1100px;
-            display: grid;
-            grid-template-columns: 38% 59%;
-            gap: 3%;
-        }
+        .card { background: var(--bg-card); backdrop-filter: var(--bg-blur); -webkit-backdrop-filter: var(--bg-blur); border: 1px solid var(--border-card); border-radius: var(--ios-radius); cursor: pointer; transition: transform 0.4s var(--ios-transition), box-shadow 0.4s var(--ios-transition), background 0.3s; box-shadow: 0 10px 30px var(--shadow-color); overflow: hidden; position: relative; }
+        .card:hover { transform: scale(1.015) translateY(-2px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); background: var(--bg-card-hover); }
 
-        .widgets-column {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        /* Estilo Base Tarjetas */
-        .card {
-            background: var(--bg-card);
-            backdrop-filter: var(--bg-blur);
-            -webkit-backdrop-filter: var(--bg-blur);
-            border: 1px solid var(--border-card);
-            border-radius: var(--ios-radius);
-            cursor: pointer;
-            transition: transform 0.4s var(--ios-transition), box-shadow 0.4s var(--ios-transition), background 0.3s;
-            box-shadow: 0 10px 30px var(--shadow-color);
-            overflow: hidden;
-            position: relative;
-        }
-        .card:hover {
-            transform: scale(1.015) translateY(-2px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            background: var(--bg-card-hover);
-        }
-
-        /* Widget Clima */
-        .card-clima {
-            background: linear-gradient(135deg, rgba(91, 159, 198, 0.8) 0%, rgba(61, 127, 168, 0.9) 100%);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 24px;
-            aspect-ratio: 1.8 / 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        .card-clima { background: linear-gradient(135deg, rgba(91, 159, 198, 0.8) 0%, rgba(61, 127, 168, 0.9) 100%); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 24px; aspect-ratio: 1.8 / 1; display: flex; flex-direction: column; justify-content: space-between; }
         .clima-header .title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
         .clima-header .subtitle { font-size: 12px; opacity: 0.75; margin-top: 2px; }
         .clima-body { display: flex; justify-content: space-between; align-items: flex-end; }
-        .clima-icon { font-size: 64px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15)); display: inline-flex; }
+        .clima-icon { font-size: 64px; display: inline-flex; }
         .clima-stats { display: flex; flex-direction: column; gap: 4px; font-size: 12px; text-align: right; }
         .clima-stats span { font-weight: 700; font-size: 14px; margin-left: 6px; }
 
-        /* Widget Calendario */
         .card-calendario { padding: 24px; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .calendar-header button { background: rgba(0, 0, 0, 0.05); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-primary); }
         .calendar-title { font-size: 15px; font-weight: 600; }
         .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 8px; text-align: center; font-weight: 600; color: var(--text-secondary); font-size: 11px; }
         .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 500; font-size: 12px; }
-        .day:hover:not(.selected) { background: rgba(0, 0, 0, 0.05); }
-        .day.selected { background: #0071e3; color: white; font-weight: 600; }
-        .day.other-month { color: #c5c5c7; }
+        .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 500; font-size: 12px; transition: all 0.2s; }
+        .day.selected { background: #0071e3 !important; color: white !important; font-weight: 600; box-shadow: 0 4px 10px rgba(0,113,227,0.4); }
+        .day.has-tasks { border: 2px dashed #0071e3; }
+        .day.other-month { color: #c5c5c7; opacity: 0.4; }
 
-        /* Panel de Control de Sistema (Derecha) */
-        .card-sistema {
-            background: var(--bg-panel);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            cursor: default;
-        }
-        .card-sistema:hover { transform: none; box-shadow: 0 10px 30px var(--shadow-color); background: var(--bg-panel); }
-
-        /* Indicadores de Puntos de Carrusel */
+        .card-sistema { background: var(--bg-panel); padding: 30px; display: flex; flex-direction: column; gap: 24px; cursor: default; }
+        .card-sistema:hover { transform: none; background: var(--bg-panel); box-shadow: 0 10px 30px var(--shadow-color); }
         .sistema-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: -10px; }
-        .sistema-dots span { width: 8px; height: 8px; background: var(--text-secondary); opacity: 0.3; border-radius: 50%; transition: all 0.3s; cursor: pointer; }
-        .sistema-dots span.active { opacity: 1; transform: scale(1.2); background: #0071e3; }
-
-        /* Contenedor Carrusel */
-        .carousel-container { width: 100%; overflow: hidden; position: relative; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .sistema-dots span { width: 8px; height: 8px; background: var(--text-secondary); opacity: 0.3; border-radius: 50%; cursor: pointer; }
+        .sistema-dots span.active { opacity: 1; background: #0071e3; transform: scale(1.2); }
+        
+        .carousel-container { width: 100%; overflow: hidden; position: relative; border-radius: 20px; }
         .carousel-track { display: flex; transition: transform 0.5s var(--ios-transition); width: 300%; }
         .carousel-slide { width: 33.333%; background: var(--bg-inner); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; min-height: 95px; }
-
-        /* Contenidos Carrusel */
-        .welcome-text h3 { font-size: 18px; font-weight: 600; }
-        .welcome-text p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
-        .sistema-time { font-size: 38px; font-weight: 700; letter-spacing: -1px; }
-        .news-content { display: flex; align-items: center; gap: 12px; width: 100%; }
-        .news-icon { font-size: 28px; color: #ff9500; display: flex; }
-        .news-text h4 { font-size: 12px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.5px; }
-        .news-text p { font-size: 13px; font-weight: 500; margin-top: 2px; line-height: 1.3; }
         
-        /* Controles Slide Centro de Control */
-        .controls-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; align-items: center; }
-        .control-item { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); padding: 8px; border-radius: 12px; cursor: pointer; transition: background 0.2s; }
-        .control-item:hover { background: rgba(0,0,0,0.08); }
-        .control-item iconify-icon { font-size: 20px; margin-bottom: 4px; }
-        .control-item span { font-size: 10px; font-weight: 500; text-align: center; color: var(--text-secondary); }
-        .control-item.active iconify-icon { color: #0071e3; }
-        .control-item.active span { color: var(--text-primary); font-weight: 600; }
+        .welcome-text h3 { font-size: 18px; font-weight: 600; }
+        .welcome-text p { font-size: 12px; color: var(--text-secondary); margin-top: 2px; line-height: 1.3; }
+        .sistema-time { font-size: 36px; font-weight: 700; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
 
-        /* Botones Principales Inferiores */
+        .controls-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
+        .control-item { display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); padding: 8px; border-radius: 12px; cursor: pointer; }
+        [data-theme="dark"] .control-item { background: rgba(255,255,255,0.05); }
+        .control-item iconify-icon { font-size: 20px; margin-bottom: 4px; }
+        .control-item span { font-size: 10px; font-weight: 500; color: var(--text-secondary); }
+        .control-item.active iconify-icon { color: #0071e3; }
+
         .sistema-actions-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .btn-action { background: var(--bg-bubble); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 24px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 12px; transition: all 0.3s var(--ios-transition); }
         .btn-action:hover { transform: translateY(-3px); background: rgba(91, 159, 198, 0.35); }
-        .btn-action iconify-icon { font-size: 40px; color: var(--text-primary); }
+        .btn-action iconify-icon { font-size: 40px; }
         .btn-action span { font-weight: 700; font-size: 13px; }
 
-        /* Panel Integrado de Tareas Línea de Timeline */
         .sistema-tareas-panel { background: var(--bg-bubble); border-radius: 24px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
         .tareas-left-meta { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 70px; }
         .tareas-left-meta iconify-icon { font-size: 36px; }
@@ -183,126 +105,67 @@
         .tareas-timeline-container::before { content: ''; position: absolute; left: 4px; top: 15px; bottom: 15px; width: 2px; background: #3d7fa8; opacity: 0.3; }
         .tarea-row { display: flex; align-items: center; gap: 14px; position: relative; }
         .tarea-node { width: 10px; height: 10px; border-radius: 50%; background: #3d7fa8; position: absolute; left: -20px; box-shadow: 0 0 0 4px var(--bg-inner); }
-        .tarea-bubble { background: var(--bg-inner); padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; flex: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .btn-add-tarea { background: var(--bg-inner); border: none; border-radius: 14px; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer; align-self: flex-start; margin-left: -4px; color: var(--text-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .tarea-bubble { background: var(--bg-inner); padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; flex: 1; }
 
-        /* MODAL FULL-SCREEN VIGILANCIA */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
-            z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none;
-            transition: opacity 0.5s var(--ios-transition), backdrop-filter 0.5s var(--ios-transition);
-        }
-        [data-theme="dark"] .modal-overlay { background: rgba(0, 0, 0, 0.01); }
+        /* MODAL OVERLAY */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.01); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ios-transition), backdrop-filter 0.5s var(--ios-transition); }
         .modal-overlay.active { opacity: 1; pointer-events: auto; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); }
-
-        .modal-content {
-            width: 90%; max-width: 550px; background: var(--bg-inner); border: 1px solid var(--border-card);
-            border-radius: 36px; padding: 36px; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15);
-            position: relative; transform: scale(0.9) translateY(40px); transition: transform 0.5s var(--ios-transition);
-        }
+        .modal-content { width: 90%; max-width: 550px; background: var(--bg-inner); border: 1px solid var(--border-card); border-radius: 36px; padding: 36px; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15); position: relative; transform: scale(0.9) translateY(40px); transition: transform 0.5s var(--ios-transition); }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
         
-        .modal-overlay.vigilancia-mode .modal-content {
-            max-width: 900px; height: 80vh; padding: 0; overflow: hidden;
-            background: #000; border: 1px solid rgba(255,255,255,0.15);
-            display: flex; flex-direction: column;
-        }
-
+        .modal-overlay.vigilancia-mode .modal-content { max-width: 900px; height: 80vh; padding: 0; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; }
         .modal-close { position: absolute; top: 24px; right: 24px; background: rgba(0, 0, 0, 0.05); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary); z-index: 1010; }
         .modal-overlay.vigilancia-mode .modal-close { background: rgba(255, 255, 255, 0.2); color: #fff; }
-
         .modal-title { font-size: 32px; font-weight: 700; margin-bottom: 16px; letter-spacing: -1px; }
-        .modal-overlay.vigilancia-mode .modal-title { display: none; }
 
         /* VIEWPORT DE VIDEO REMOTO */
         .video-viewport { width: 100%; flex: 1; position: relative; display: flex; align-items: center; justify-content: center; background: #000; }
-        .video-viewport video {
-            width: 100%; height: 100%; object-fit: cover; background: #000;
-            transition: transform 0.3s var(--ios-transition); transform-origin: center center;
-            display: none;
-        }
-        .video-placeholder {
-            position: absolute; inset: 0; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; color: #8a8a99; font-weight: 500; font-size: 14px; text-align: center; padding: 20px;
-        }
+        .video-viewport video { width: 100%; height: 100%; object-fit: cover; background: #000; display: none; transition: transform 0.3s var(--ios-transition); transform-origin: center center; }
+        .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8a8a99; font-weight: 500; font-size: 14px; text-align: center; padding: 20px; }
 
-        /* BOTONERA FLOTANTE CAMARA */
-        .ios-camera-controls {
-            position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
-            display: flex; align-items: center; gap: 14px; background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 8px 20px;
-            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1005;
-        }
-        .btn-cam-float {
-            background: rgba(255, 255, 255, 0.12); border: none; width: 44px; height: 44px;
-            border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
-        }
+        /* CONTROLES CAMARA */
+        .ios-camera-controls { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 8px 20px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 1005; }
+        .btn-cam-float { background: rgba(255, 255, 255, 0.12); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
         .btn-cam-float:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.05); }
-        .btn-cam-float iconify-icon { font-size: 20px; }
         .btn-cam-float.active { background: #ffffff; color: #000000; }
-
         .btn-cam-config { position: absolute; top: 24px; left: 24px; z-index: 1010; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255,255,255,0.1); }
 
-        /* PANEL SUBDESLIZANTE PARA MULTICAM */
-        .camera-settings-panel {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(14, 14, 20, 0.95); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
-            z-index: 1008; padding: 40px; display: flex; flex-direction: column;
-            color: white; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ios-transition);
-            overflow-y: auto;
-        }
+        /* SUBPANEL CONFIGURACION */
+        .camera-settings-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14, 14, 20, 0.95); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px); z-index: 1008; padding: 40px; display: flex; flex-direction: column; color: white; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ios-transition); overflow-y: auto; }
         .camera-settings-panel.active { opacity: 1; pointer-events: auto; }
         .camera-settings-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
 
-        /* Formularios */
-        .modal-form { display: flex; flex-direction: column; gap: 14px; margin-top: 10px; text-align: left; }
-        .modal-form label { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .modal-form input, .modal-form select { background: rgba(0,0,0,0.04); border: none; padding: 14px; border-radius: 14px; font-size: 15px; color: var(--text-primary); width: 100%; font-weight: 500; }
-        [data-theme="dark"] .modal-form input { background: rgba(255,255,255,0.05); }
-        
-        .camera-settings-panel .modal-form label { color: #8a8a99; }
+        .modal-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+        .modal-form label { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .modal-form input { background: rgba(0,0,0,0.04); border: none; padding: 14px; border-radius: 14px; font-size: 15px; color: var(--text-primary); width: 100%; outline: none; }
+        [data-theme="dark"] .modal-form input { background: rgba(255,255,255,0.05); color: white; }
         .camera-settings-panel .modal-form input { background: rgba(255,255,255,0.08); color: white; }
-        .camera-settings-panel .cam-code-input { letter-spacing: 2px; font-size: 18px; font-weight: 700; text-transform: uppercase; }
+        .cam-code-input { letter-spacing: 2px; font-size: 18px; font-weight: 700; text-transform: uppercase; text-align: center; }
+        .modal-btn { background: #0071e3; color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 600; cursor: pointer; }
 
-        .modal-btn { background: #0071e3; color: white; border: none; padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 6px; transition: opacity 0.2s; }
-        .modal-btn:hover { opacity: 0.9; }
-
-        /* Listas de Dispositivos */
         .cam-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .cam-item { background: rgba(255,255,255,0.06); padding: 14px 18px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: background 0.2s; }
-        .cam-item:hover { background: rgba(255,255,255,0.12); }
+        .cam-item { background: rgba(255,255,255,0.06); padding: 14px 18px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
         .cam-item.selected { border-color: #34c759; background: rgba(52, 199, 89, 0.15); }
-        .cam-item-left { display: flex; align-items: center; gap: 14px; }
-        .cam-item-icon { font-size: 24px; color: #ff9500; display: inline-flex; }
-        .cam-item.selected .cam-item-icon { color: #34c759; }
         .cam-item-info h5 { font-size: 16px; font-weight: 600; color: #fff; }
         .cam-item-info p { font-size: 12px; color: #8a8a99; margin-top: 2px; }
+        .btn-delete { background: none; border: none; color: #ff3b30; cursor: pointer; font-size: 18px; display: inline-flex; }
 
         .items-list { margin-top: 24px; max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         .list-entry { background: rgba(0,0,0,0.02); padding: 14px 18px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-card); }
         [data-theme="dark"] .list-entry { background: rgba(255,255,255,0.02); }
-        .list-entry-info h5 { font-size: 15px; font-weight: 600; }
-        .list-entry-info p { font-size: 12px; color: var(--text-secondary); }
-        .btn-delete { background: none; border: none; color: #ff3b30; cursor: pointer; font-size: 18px; display: inline-flex; padding: 4px; }
 
-        /* Banner de Notificación de Alarma */
         .alarm-banner { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #ff3b30; color: white; padding: 16px 32px; border-radius: 20px; box-shadow: 0 10px 30px rgba(255,59,48,0.3); z-index: 2000; font-weight: 700; display: flex; align-items: center; gap: 16px; transition: transform 0.5s var(--ios-transition); }
         .alarm-banner.active { transform: translateX(-50%) translateY(0); }
         .btn-stop-alarm { background: white; color: #ff3b30; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
-        @media (max-width: 850px) {
-            .dashboard-container { grid-template-columns: 1fr; gap: 24px; }
-            .modal-overlay.vigilancia-mode .modal-content { height: 75vh; width: 95%; }
-        }
+        @media (max-width: 850px) { .dashboard-container { grid-template-columns: 1fr; gap: 24px; } }
     </style>
 </head>
 <body>
 
     <div class="alarm-banner" id="alarmBanner">
         <iconify-icon icon="fluent:alert-urgent-24-filled" style="font-size: 28px;"></iconify-icon>
-        <span id="alarmBannerText">¡ALERTA RECONOCIDA!</span>
+        <span id="alarmBannerText">¡NOTIFICACIÓN DE ALERTA!</span>
         <button class="btn-stop-alarm" onclick="stopActiveAlarm()">Silenciar</button>
     </div>
 
@@ -310,24 +173,23 @@
         <div class="widgets-column">
             <div class="card card-clima" onclick="openModal('clima')">
                 <div class="clima-header">
-                    <div class="title">Asunción</div>
-                    <div class="subtitle">18 de mayo de 2026</div>
+                    <div class="title">Ñemby</div>
+                    <div class="subtitle">Dashboard de Control Operativo</div>
                 </div>
                 <div class="clima-body">
                     <div class="clima-icon"><iconify-icon icon="fluent:weather-rain-showers-day-24-filled"></iconify-icon></div>
                     <div class="clima-stats">
                         <p>Máxima <span>27°</span></p>
                         <p>Mínima <span>23°</span></p>
-                        <p>Precip. <span>93%</span></p>
                     </div>
                 </div>
             </div>
 
-            <div class="card card-calendario" onclick="openModal('calendario')">
+            <div class="card card-calendario" onclick="event.stopPropagation()">
                 <div class="calendar-header">
-                    <button onclick="event.stopPropagation(); previousMonth()"><iconify-icon icon="fluent:chevron-left-16-filled"></iconify-icon></button>
-                    <div class="calendar-title">Mayo, 2026</div>
-                    <button onclick="event.stopPropagation(); nextMonth()"><iconify-icon icon="fluent:chevron-right-16-filled"></iconify-icon></button>
+                    <button onclick="previousMonth()"><iconify-icon icon="fluent:chevron-left-16-filled"></iconify-icon></button>
+                    <div class="calendar-title" id="calDisplayTitle">Mayo, 2026</div>
+                    <button onclick="nextMonth()"><iconify-icon icon="fluent:chevron-right-16-filled"></iconify-icon></button>
                 </div>
                 <div class="weekdays"><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div><div>Do</div></div>
                 <div class="days" id="calendarDays"></div>
@@ -336,28 +198,31 @@
 
         <div class="card card-sistema">
             <div class="sistema-dots">
-                <span class="active" onclick="moveCarousel(0)"></span>
-                <span onclick="moveCarousel(1)"></span>
-                <span onclick="moveCarousel(2)"></span>
+                <span class="active" id="dotCarousel0" onclick="moveCarousel(0)"></span>
+                <span id="dotCarousel1" onclick="moveCarousel(1)"></span>
+                <span id="dotCarousel2" onclick="moveCarousel(2)"></span>
             </div>
             
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     <div class="carousel-slide">
-                        <div class="welcome-text"><h3>Sistema Activo</h3><p>Lunes, 18 de Mayo de 2026</p></div>
-                        <div class="sistema-time" id="systemTime">15:59</div>
+                        <div class="welcome-text">
+                            <h3 id="carouselGreeting">¡Hola!</h3>
+                            <p id="carouselDateString">Cargando fecha del sistema...</p>
+                        </div>
+                        <div class="sistema-time" id="systemTime">00:00</div>
                     </div>
                     <div class="carousel-slide">
-                        <div class="news-content">
-                            <div class="news-icon"><iconify-icon icon="fluent:news-24-filled"></iconify-icon></div>
-                            <div class="news-text"><h4>Canales WebRTC</h4><p id="newsTicker">Sockets e hilos de sincronización P2P listos.</p></div>
+                        <div style="display:flex; flex-direction:column; justify-content:center; text-align:left; width:100%; gap:2px;">
+                            <h4 style="font-size:11px; color:#ff9500; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Noticias de Paraguay</h4>
+                            <p id="newsTickerDisplay" style="font-size:13px; font-weight:500; color:var(--text-primary); transition: opacity 0.3s;">Sincronizando cables informativos locales...</p>
                         </div>
                     </div>
                     <div class="carousel-slide">
                         <div class="controls-grid">
-                            <div class="control-item" id="ctrlNet"><iconify-icon icon="fluent:wifi-1-24-filled"></iconify-icon><span id="lblNet">Conectado</span></div>
-                            <div class="control-item" id="ctrlTheme" onclick="toggleThemeManual()"><iconify-icon icon="fluent:weather-moon-24-filled"></iconify-icon><span id="lblTheme">Claro</span></div>
-                            <div class="control-item" onclick="toggleControl(this)"><iconify-icon icon="fluent:speaker-2-24-filled"></iconify-icon><span>Sonido</span></div>
+                            <div class="control-item" id="ctrlNet"><iconify-icon icon="fluent:wifi-1-24-filled"></iconify-icon><span>En Línea</span></div>
+                            <div class="control-item" id="ctrlTheme" onclick="toggleThemeManual()"><iconify-icon icon="fluent:weather-moon-24-filled"></iconify-icon><span>Tema</span></div>
+                            <div class="control-item" onclick="toggleControl(this)"><iconify-icon icon="fluent:speaker-2-24-filled"></iconify-icon><span>Audio</span></div>
                             <div class="control-item" onclick="toggleControl(this)"><iconify-icon icon="fluent:brightness-high-24-filled"></iconify-icon><span>Filtros</span></div>
                         </div>
                     </div>
@@ -376,7 +241,7 @@
             </div>
 
             <div class="sistema-tareas-panel" onclick="openModal('tareas')">
-                <div class="tareas-left-meta"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon><span>Tareas</span></div>
+                <div class="tareas-left-meta"><iconify-icon icon="fluent:clipboard-task-list-ltr-24-filled"></iconify-icon><span>Agenda</span></div>
                 <div class="tareas-timeline-container" id="mainTasksTimeline"></div>
             </div>
         </div>
@@ -384,80 +249,89 @@
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
-            
             <button class="btn-cam-float btn-cam-config" id="camConfigBtn" onclick="toggleCameraSettingsPanel(event)" style="display:none;">
                 <iconify-icon icon="fluent:settings-24-filled"></iconify-icon>
             </button>
-
             <button class="modal-close" onclick="closeModal()">
                 <iconify-icon icon="fluent:dismiss-20-filled"></iconify-icon>
             </button>
-
             <h2 class="modal-title" id="modalTitle">Detalles</h2>
             <div id="modalDynamicBody"></div>
 
             <div class="camera-settings-panel" id="cameraSettingsPanel">
                 <div class="camera-settings-title">
-                    <span>Gestionar Cámaras SecuCam</span>
-                    <button class="btn-cam-float" onclick="toggleCameraSettingsPanel(event)" style="background:rgba(255,255,255,0.1); width:32px; height:32px;"><iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon></button>
+                    <span>Mis Cámaras SecuCam</span>
+                    <button class="btn-cam-float" onclick="toggleCameraSettingsPanel(event)" style="width:32px; height:32px;"><iconify-icon icon="fluent:dismiss-16-filled"></iconify-icon></button>
                 </div>
-                
                 <div class="modal-form">
                     <label>Nombre Identificador (ej. Frente, Oficina)</label>
-                    <input type="text" id="newCamNameInput" placeholder="Nombre de la zona">
-                    
-                    <label>Código Peer de Transmisión (5 letras del emisor)</label>
-                    <input type="text" id="newCamCodeInput" class="cam-code-input" maxlength="5" placeholder="ABCDE" style="text-transform: uppercase;">
-                    
+                    <input type="text" id="newCamNameInput" placeholder="Identificador de la zona">
+                    <label>Código Peer DE LA CÁMARA (5 LETRAS)</label>
+                    <input type="text" id="newCamCodeInput" class="cam-code-input" maxlength="5" placeholder="SALAS">
                     <button class="modal-btn" style="background:#34c759;" onclick="addNewCameraDevice()">+ Registrar Cámara</button>
                 </div>
-
                 <div style="margin-top: 24px;">
-                    <label style="font-size:11px; text-transform:uppercase; color:#8a8a99; font-weight:600;">Dispositivos Registrados</label>
+                    <label style="font-size:11px; color:#8a8a99; font-weight:600;">Dispositivos Registrados</label>
                     <div class="cam-list" id="registeredCamsList"></div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        // --- AUDIO COMPONENT ---
+        // --- MOTOR DE ALERTAS Y AUDIO ---
         let audioCtx = null, alarmInterval = null;
         function playBeep(f=880, d=0.15) {
             try {
                 if(!audioCtx) audioCtx = new(window.AudioContext||window.webkitAudioContext)();
                 let o = audioCtx.createOscillator(), g = audioCtx.createGain();
                 o.type='sine'; o.frequency.setValueAtTime(f, audioCtx.currentTime);
-                g.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                g.gain.setValueAtTime(0.15, audioCtx.currentTime);
                 o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d);
             }catch(e){}
         }
-        function triggerAudioAlert(t) {
-            document.getElementById('alarmBannerText').textContent = t;
+        function triggerAudioAlert(text) {
+            document.getElementById('alarmBannerText').textContent = text;
             document.getElementById('alarmBanner').classList.add('active');
             if(alarmInterval) clearInterval(alarmInterval);
-            alarmInterval = setInterval(() => { playBeep(987, 0.2); }, 1000);
+            alarmInterval = setInterval(() => { playBeep(950, 0.2); }, 1000);
         }
         function stopActiveAlarm() { document.getElementById('alarmBanner').classList.remove('active'); clearInterval(alarmInterval); }
 
-        // --- CARRUSEL ---
+        // --- SISTEMA AUTOMÁTICO DE NOTICIAS DE PARAGUAY ---
+        const paraguayNews = [
+            "Dirección de Meteorología prevé jornadas cálidas con humedad elevada en Central.",
+            "ANDE continúa trabajos de mantenimiento preventivo y cambio de conductores en líneas de media tensión.",
+            "MOPC anuncia optimización de viaductos y desvíos inteligentes en accesos a Gran Asunción.",
+            "Nuevas tecnologías WebRTC robustecen los esquemas de seguridad P2P de un solo salto en el país."
+        ];
+        let currentNewsIdx = 0;
+        function rotateParaguayNews() {
+            const display = document.getElementById('newsTickerDisplay');
+            if(display) {
+                display.style.opacity = '0';
+                setTimeout(() => {
+                    display.textContent = paraguayNews[currentNewsIdx];
+                    display.style.opacity = '1';
+                    currentNewsIdx = (currentNewsIdx + 1) % paraguayNews.length;
+                }, 300);
+            }
+        }
+        setInterval(rotateParaguayNews, 5000);
+
+        // --- MANEJO DE CARRUSEL ---
         const track = document.getElementById('carouselTrack');
         let currentSlide = 0;
-        function moveCarousel(idx) { currentSlide = idx; if(track) track.style.transform = `translateX(-${idx * 33.333}%)`; document.querySelectorAll('.sistema-dots span').forEach((d,i)=>d.classList.toggle('active', i===idx)); }
-        setInterval(() => { if(track) moveCarousel((currentSlide+1)%3); }, 8000);
+        function moveCarousel(idx) { 
+            currentSlide = idx; 
+            if(track) track.style.transform = `translateX(-${idx * 33.333}%)`; 
+            document.querySelectorAll('.sistema-dots span').forEach((d,i)=>d.classList.toggle('active', i===idx)); 
+        }
+        setInterval(() => { if(track) moveCarousel((currentSlide+1)%3); }, 7000);
 
-        const newsItems = [
-            "📡 WebRTC Link: Servidor Broker enlazado correctamente.",
-            "🌤️ Clima: Monitoreo operativo estable sin alertas meteorológicas.",
-            "🔒 Protocolo: Handshake de datos optimizado en modo pasivo."
-        ];
-        let newsIdx = 0;
-        setInterval(() => { const ticker = document.getElementById('newsTicker'); if(ticker) { ticker.textContent = newsItems[newsIdx]; newsIdx = (newsIdx + 1) % newsItems.length; } }, 4000);
-
-        // --- MULTI-CAM ENGINE REVISADO PARA SECUCAM NATIVO ---
-        let peerInstance = null, activeCall = null, activeDataConn = null;
-        let cameraDevices = JSON.parse(localStorage.getItem('secucam_devices')) || [];
+        // --- CORE WEBRTC SECUCAM ---
+        let peerInstance = null, dataConn = null, activeCall = null;
+        let cameraDevices = JSON.parse(localStorage.getItem('secucam_devs')) || [];
         let selectedCamId = localStorage.getItem('secucam_active_id') || '';
         let currentZoom = 1;
 
@@ -466,54 +340,59 @@
                 attemptCameraConnection();
                 return;
             }
-
-            // Inicialización limpia: El Visor no necesita ID fijo. El servidor le asigna uno aleatorio.
             peerInstance = new Peer();
-
             peerInstance.on('open', (id) => {
-                console.log('Visor registrado con ID temporal:', id);
+                console.log('Visor asignado con Hash Temporal P2P:', id);
                 attemptCameraConnection();
             });
-
-            // ESCUCHADOR PASIVO OBLIGATORIO: Aquí se recibe el video cuando el Emisor ejecuta su llamada de respuesta
             peerInstance.on('call', (call) => {
-                console.log('Recibiendo llamada entrante con stream desde el emisor SecuCam...');
                 activeCall = call;
-                
-                // Responder de forma limpia (sin enviarle stream local a la cámara)
                 call.answer();
-                
                 call.on('stream', (remoteStream) => {
-                    console.log('Stream WebRTC inyectado exitosamente.');
                     const video = document.getElementById('remoteWebVideo');
                     const placeholder = document.getElementById('videoCanvasPlaceholder');
                     if (video) {
                         video.srcObject = remoteStream;
                         video.style.display = 'block';
                         if (placeholder) placeholder.style.display = 'none';
-                        updateCamStatusText("Transmisión en vivo activa");
+                        updateCamStatusText("Transmisión en Vivo Operativa");
                     }
                 });
-
-                call.on('close', () => {
-                    resetVideoUI("Transmisión finalizada por el emisor.");
-                });
+                call.on('close', () => { resetVideoUI("Cámara desconectada."); });
             });
-
             peerInstance.on('error', (err) => {
-                console.error('PeerJS Core Error:', err.type);
-                if (err.type === 'peer-unavailable') {
-                    updateCamStatusText("Cámara apagada o código incorrecto.");
-                } else if (err.type === 'disconnected') {
-                    peerInstance.reconnect();
-                } else {
-                    updateCamStatusText(`Estado: ${err.type}`);
-                }
+                if(err.type === 'peer-unavailable') updateCamStatusText("La cámara está apagada o no existe.");
+                else updateCamStatusText(`Estado de red: ${err.type}`);
             });
         }
 
-        function updateCamStatusText(text) { const el = document.getElementById('videoStatusTxt'); if(el) el.textContent = text; }
+        function attemptCameraConnection() {
+            if (!peerInstance || peerInstance.destroyed) return;
+            const activeDevice = cameraDevices.find(c => c.id === selectedCamId);
+            if (!activeDevice) {
+                updateCamStatusText("No hay cámaras configuradas. Presioná el engranaje superior.");
+                return;
+            }
+            const targetPeerId = "secucam-" + activeDevice.code.toLowerCase().trim();
+            updateCamStatusText(`Conectando por datos a [${activeDevice.name}]...`);
 
+            if (dataConn) { dataConn.close(); dataConn = null; }
+            if (activeCall) { activeCall.close(); activeCall = null; }
+
+            dataConn = peerInstance.connect(targetPeerId, { reliable: true });
+            dataConn.on('open', () => {
+                updateCamStatusText("Enlazado por datos. Solicitando stream multimedia...");
+                dataConn.send({ type: 'solicitud-stream', visorId: peerInstance.id });
+            });
+            dataConn.on('data', (data) => {
+                if (data && data.type === 'alert') {
+                    triggerAudioAlert(`🚨 MOVIMIENTO: ${data.message}`);
+                }
+            });
+            dataConn.on('close', () => { resetVideoUI("Canal de enlace cerrado."); });
+        }
+
+        function updateCamStatusText(text) { const el = document.getElementById('videoStatusTxt'); if(el) el.textContent = text; }
         function resetVideoUI(msg) {
             const video = document.getElementById('remoteWebVideo');
             const placeholder = document.getElementById('videoCanvasPlaceholder');
@@ -522,50 +401,20 @@
             updateCamStatusText(msg);
         }
 
-        // --- CORRECCIÓN CLAVE: ENLACE SIN APERTURA DE LLAMADA SALIENTE ---
-        function attemptCameraConnection() {
-            if (!peerInstance || peerInstance.destroyed) return;
-
-            const activeDevice = cameraDevices.find(c => c.id === selectedCamId);
-            if (!activeDevice) {
-                updateCamStatusText("No hay cámaras configuradas. Presioná el engranaje.");
-                return;
-            }
-
-            // El emisor en secucam_4.html arma su ID como "secucam-" + código en minúsculas
-            const targetPeerId = "secucam-" + activeDevice.code.toLowerCase().trim();
-            updateCamStatusText(`Solicitando conexión a [${activeDevice.name}]...`);
-
-            // Limpiar canales previos para evitar solapamientos
-            if (activeDataConn) { activeDataConn.close(); activeDataConn = null; }
-            if (activeCall) { activeCall.close(); activeCall = null; }
-
-            // 1. Abrimos SOLAMENTE el canal de datos.
-            activeDataConn = peerInstance.connect(targetPeerId, { reliable: true });
-
-            activeDataConn.on('open', () => {
-                console.log(`Conectado al canal de datos de: ${targetPeerId}`);
-                updateCamStatusText("Enlazado. Esperando flujo de video de la cámara...");
-                
-                // Enviamos señal de inicialización por si el emisor requiere el trigger por texto plano o JSON
-                activeDataConn.send("viewer-connected");
-                activeDataConn.send(JSON.stringify({ type: 'join', role: 'visor' }));
-            });
-
-            // Escuchar alertas remotas enviadas por la cámara a través del canal de datos
-            activeDataConn.on('data', (data) => {
-                console.log("Comando recibido del emisor:", data);
-                if (String(data).startsWith('alert:') || String(data).includes('motion')) {
-                    triggerAudioAlert("¡MOVIMIENTO DETECTADO EN CÁMARA!");
-                }
-            });
-
-            activeDataConn.on('close', () => {
-                console.log("Canal de datos cerrado.");
-            });
+        function sendTorchCommand(e) {
+            e.stopPropagation(); const btn = document.getElementById('btnTorch'); btn.classList.toggle('active'); const status = btn.classList.contains('active');
+            if(dataConn && dataConn.open) dataConn.send({ type: 'torch', value: status });
+            playBeep(status ? 900 : 600, 0.05);
         }
+        function toggleAudioTrack(e) {
+            e.stopPropagation(); const btn = document.getElementById('btnAudioToggle'); const video = document.getElementById('remoteWebVideo'); if(!video) return;
+            btn.classList.toggle('active'); video.muted = !video.muted;
+            btn.querySelector('iconify-icon').setAttribute('icon', video.muted ? 'fluent:speaker-mute-24-filled' : 'fluent:speaker-2-24-filled');
+            playBeep(440, 0.05);
+        }
+        function executeZoom(val, e) { e.stopPropagation(); currentZoom = Math.max(1, Math.min(4, currentZoom + val)); const video = document.getElementById('remoteWebVideo'); if(video) video.style.transform = `scale(${currentZoom})`; playBeep(700, 0.03); }
 
-        // --- POPUP ENGINE ---
+        // --- NAVEGACIÓN DE MODALES ---
         const modalOverlay = document.getElementById('modalOverlay');
         const modalTitle = document.getElementById('modalTitle');
         const dynamicBody = document.getElementById('modalDynamicBody');
@@ -582,13 +431,12 @@
                 modalOverlay.classList.add('vigilancia-mode');
                 camConfigBtn.style.display = 'flex';
                 currentZoom = 1;
-
                 dynamicBody.innerHTML = `
                     <div class="video-viewport">
                         <video id="remoteWebVideo" autoplay playsinline></video>
                         <div class="video-placeholder" id="videoCanvasPlaceholder">
                             <iconify-icon icon="fluent:video-clip-24-filled" style="font-size:44px; margin-bottom:12px; color:#ff9500;"></iconify-icon>
-                            <span id="videoStatusTxt">Inicializando PeerJS Visor...</span>
+                            <span id="videoStatusTxt">Inicializando Red de Enlace...</span>
                         </div>
                         <div class="ios-camera-controls">
                             <button class="btn-cam-float" id="btnTorch" onclick="sendTorchCommand(event)"><iconify-icon icon="fluent:flashlight-24-filled"></iconify-icon></button>
@@ -597,53 +445,39 @@
                             <button class="btn-cam-float" onclick="executeZoom(-0.25, event)"><iconify-icon icon="fluent:zoom-out-24-filled"></iconify-icon></button>
                         </div>
                     </div>`;
-
                 initReceiverPeer();
                 renderRegisteredCameras();
             } else if (type === 'alarma') {
-                modalTitle.textContent = "Alarmas del Sistema"; buildAlarmsManager();
+                modalTitle.textContent = "Alarmas Programadas"; buildAlarmsManager();
             } else if (type === 'tareas') {
-                modalTitle.textContent = "Planificación de Tareas"; buildTasksManager();
-            } else if (type === 'clima') {
-                modalTitle.textContent = "Condiciones Climáticas";
-                dynamicBody.innerHTML = `<p style="line-height:1.6; font-size:15px;">Datos de Asunción: Viento a 14 km/h, Humedad del 93%. Ecosistema perimetral sin novedades de riesgo.</p>`;
+                modalTitle.textContent = "Gestión de Agenda"; buildTasksManager();
             } else {
-                modalTitle.textContent = "Agenda General";
-                dynamicBody.innerHTML = `<p style="line-height:1.6; font-size:15px;">Todos los nodos de datos se encuentran sincronizados.</p>`;
+                modalTitle.textContent = "Centro Informativo";
+                dynamicBody.innerHTML = `<p style="font-size:15px; color:var(--text-secondary); line-height:1.6;">Nodos operativos sin alertas operativas pendientes en Ñemby, Paraguay.</p>`;
             }
         }
 
         function closeModal() { 
             modalOverlay.classList.remove('active'); 
             if(activeCall) { activeCall.close(); activeCall = null; }
-            if(activeDataConn) { activeDataConn.close(); activeDataConn = null; }
+            if(dataConn) { dataConn.close(); dataConn = null; }
         }
 
-        // --- GESTIÓN DISPOSITIVOS MULTICAMARA ---
         function toggleCameraSettingsPanel(e) { e.stopPropagation(); cameraSettingsPanel.classList.toggle('active'); }
         
         function addNewCameraDevice() {
-            const nameInput = document.getElementById('newCamNameInput');
-            const codeInput = document.getElementById('newCamCodeInput');
-            
-            if(!nameInput || !codeInput || !nameInput.value.trim() || codeInput.value.trim().length < 5) {
-                alert("Por favor introduce un identificador y el código de 5 letras.");
-                return;
-            }
+            const name = document.getElementById('newCamNameInput').value.trim();
+            const code = document.getElementById('newCamCodeInput').value.trim().toUpperCase();
+            if(!name || code.length < 3) return alert("Por favor introduce los datos completos.");
 
-            const newCam = {
-                id: 'cam_' + Date.now(),
-                name: nameInput.value.trim(),
-                code: codeInput.value.toUpperCase().trim()
-            };
-
-            cameraDevices.push(newCam);
-            selectedCamId = newCam.id;
-            localStorage.setItem('secucam_devices', JSON.stringify(cameraDevices));
+            const item = { id: 'cam_' + Date.now(), name, code };
+            cameraDevices.push(item);
+            selectedCamId = item.id;
+            localStorage.setItem('secucam_devs', JSON.stringify(cameraDevices));
             localStorage.setItem('secucam_active_id', selectedCamId);
 
-            nameInput.value = '';
-            codeInput.value = '';
+            document.getElementById('newCamNameInput').value = '';
+            document.getElementById('newCamCodeInput').value = '';
             
             renderRegisteredCameras();
             cameraSettingsPanel.classList.remove('active');
@@ -651,195 +485,222 @@
         }
 
         function renderRegisteredCameras() {
-            const container = document.getElementById('registeredCamsList');
-            if(!container) return;
-            container.innerHTML = '';
-
-            if(cameraDevices.length === 0) {
-                container.innerHTML = '<p style="font-size:13px; color:#8a8a99; text-align:center; padding:10px;">Ninguna cámara agregada.</p>';
-                return;
-            }
-
+            const container = document.getElementById('registeredCamsList'); if(!container) return; container.innerHTML = '';
+            if(cameraDevices.length === 0) { container.innerHTML = '<p style="font-size:12px; color:#8a8a99; text-align:center;">Ninguna cámara enlazada.</p>'; return; }
             cameraDevices.forEach(cam => {
-                const isSelected = cam.id === selectedCamId;
-                const div = document.createElement('div');
-                div.className = `cam-item ${isSelected ? 'selected' : ''}`;
-                
-                div.onclick = (e) => {
-                    selectedCamId = cam.id;
-                    localStorage.setItem('secucam_active_id', selectedCamId);
-                    renderRegisteredCameras();
-                    cameraSettingsPanel.classList.remove('active');
-                    attemptCameraConnection();
-                };
-
-                div.innerHTML = `
-                    <div class="cam-item-left">
-                        <div class="cam-item-icon">
-                            <iconify-icon icon="fluent:video-clip-24-filled"></iconify-icon>
-                        </div>
-                        <div class="cam-item-info">
-                            <h5>${cam.name}</h5>
-                            <p>Peer Code: ${cam.code}</p>
-                        </div>
-                    </div>
-                    <button class="btn-delete" style="color:#ff453a;" onclick="deleteCameraDevice('${cam.id}', event)">
-                        <iconify-icon icon="fluent:delete-16-filled"></iconify-icon>
-                    </button>
-                `;
+                const active = cam.id === selectedCamId;
+                const div = document.createElement('div'); div.className = `cam-item ${active ? 'selected' : ''}`;
+                div.onclick = () => { selectedCamId = cam.id; localStorage.setItem('secucam_active_id', selectedCamId); renderRegisteredCameras(); cameraSettingsPanel.classList.remove('active'); attemptCameraConnection(); };
+                div.innerHTML = `<div class="cam-item-info"><h5>${cam.name}</h5><p>Código: ${cam.code}</p></div><button class="btn-delete" onclick="deleteCamera('${cam.id}', event)"><iconify-icon icon="fluent:delete-16-filled"></iconify-icon></button>`;
                 container.appendChild(div);
             });
         }
 
-        function deleteCameraDevice(id, e) {
-            e.stopPropagation();
-            cameraDevices = cameraDevices.filter(c => c.id !== id);
-            localStorage.setItem('secucam_devices', JSON.stringify(cameraDevices));
-            if(selectedCamId === id) {
-                selectedCamId = cameraDevices.length > 0 ? cameraDevices[0].id : '';
-                localStorage.setItem('secucam_active_id', selectedCamId);
-            }
-            renderRegisteredCameras();
-            if(selectedCamId) {
-                attemptCameraConnection();
-            } else {
-                resetVideoUI("No hay cámaras cargadas.");
-            }
+        function deleteCamera(id, e) {
+            e.stopPropagation(); cameraDevices = cameraDevices.filter(c => c.id !== id);
+            localStorage.setItem('secucam_devs', JSON.stringify(cameraDevices));
+            if(selectedCamId === id) selectedCamId = cameraDevices.length > 0 ? cameraDevices[0].id : '';
+            localStorage.setItem('secucam_active_id', selectedCamId);
+            renderRegisteredCameras(); if(selectedCamId) attemptCameraConnection(); else resetVideoUI("Agrega una cámara para iniciar.");
         }
 
-        // --- ACCIONES REMOTAS FLOTANTES ---
-        function sendTorchCommand(e) {
-            e.stopPropagation(); const btn = document.getElementById('btnTorch'); btn.classList.toggle('active'); const isTorchOn = btn.classList.contains('active');
-            if(activeDataConn && activeDataConn.open) { 
-                activeDataConn.send(`torch:${isTorchOn ? 'on' : 'off'}`);
-                activeDataConn.send(JSON.stringify({ type: 'torch', value: isTorchOn }));
-            }
-            playBeep(isTorchOn ? 900 : 600, 0.05);
-        }
-        function toggleAudioTrack(e) {
-            e.stopPropagation(); const btn = document.getElementById('btnAudioToggle'); const video = document.getElementById('remoteWebVideo'); if(!video) return;
-            btn.classList.toggle('active'); video.muted = !video.muted;
-            btn.querySelector('iconify-icon').setAttribute('icon', video.muted ? 'fluent:speaker-mute-24-filled' : 'fluent:speaker-2-24-filled');
-            playBeep(440, 0.05);
-        }
-        function executeZoom(val, e) { e.stopPropagation(); currentZoom = Math.max(1, Math.min(4, currentZoom + val)); const video = document.getElementById('remoteWebVideo'); if(video) video.style.transform = `scale(${currentZoom})`; playBeep(700, 0.03); }
+        // --- PERSISTENCIA Y ADICIÓN CON FECHA Y HORA (ALARMAS Y TAREAS) ---
+        let alarms = JSON.parse(localStorage.getItem('sys_alarms')) || [];
+        let tasks = JSON.parse(localStorage.getItem('sys_tasks')) || [];
+        
+        let chosenSelectedDate = new Date().toISOString().split('T')[0]; // Sincronizador Base YYYY-MM-DD
 
-        // --- SISTEMA PERSISTENCIA & COMPONENTES ADICIONALES ---
-        let alarms = JSON.parse(localStorage.getItem('ios_alarms')) || [];
-        let tasks = JSON.parse(localStorage.getItem('ios_tasks')) || [];
-        function saveData() { localStorage.setItem('ios_alarms', JSON.stringify(alarms)); localStorage.setItem('ios_tasks', JSON.stringify(tasks)); renderMainTasks(); }
+        function saveDashboardData() { 
+            localStorage.setItem('sys_alarms', JSON.stringify(alarms)); 
+            localStorage.setItem('sys_tasks', JSON.stringify(tasks)); 
+            renderMainTasks(); 
+            renderCalendar();
+        }
 
-        let manualThemeOverride = false;
-        function checkThemeRules() {
-            if (manualThemeOverride) return;
-            const hour = new Date().getHours();
-            const themeCtrl = document.getElementById('ctrlTheme');
-            const themeLbl = document.getElementById('lblTheme');
-            if (hour >= 18 || hour < 6) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                if(themeCtrl) themeCtrl.classList.add('active');
-                if(themeLbl) themeLbl.textContent = "Oscuro";
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-                if(themeCtrl) themeCtrl.classList.remove('active');
-                if(themeLbl) themeLbl.textContent = "Claro";
-            }
-        }
-        function toggleThemeManual() {
-            manualThemeOverride = true;
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const themeCtrl = document.getElementById('ctrlTheme');
-            const themeLbl = document.getElementById('lblTheme');
-            if (currentTheme === 'dark') {
-                document.documentElement.removeAttribute('data-theme');
-                if(themeCtrl) themeCtrl.classList.remove('active');
-                if(themeLbl) themeLbl.textContent = "Claro";
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                if(themeCtrl) themeCtrl.classList.add('active');
-                if(themeLbl) themeLbl.textContent = "Oscuro";
-            }
-        }
+        // --- TICKER CENTRAL DE TIEMPO, FECHAS Y ENGINE AUTOMÁTICO DE TEMAS ---
+        let userManualThemeState = localStorage.getItem('manual_theme_active') === 'true';
 
         setInterval(() => {
             const now = new Date();
+            
+            // Reloj e hilo de fecha del primer slide del carrusel
             const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            const timeEl = document.getElementById('systemTime'); if(timeEl) timeEl.textContent = timeStr;
+            document.getElementById('systemTime').textContent = timeStr;
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            let dateStrPy = now.toLocaleDateString('es-PY', options);
+            document.getElementById('carouselDateString').textContent = dateStrPy.charAt(0).toUpperCase() + dateStrPy.slice(1);
 
+            // Verificador inteligente de Tema (Paraguay Time Base)
+            if(!userManualThemeState) {
+                const hour = now.getHours();
+                if(hour >= 18 || hour < 6) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
+            }
+
+            // Despachador estricto de alarmas filtrando Fecha y Hora exacta
+            const currentDateStr = now.toISOString().split('T')[0];
             alarms.forEach(a => {
-                if (a.enabled && a.time === timeStr && !a.triggered) { triggerAudioAlert(`⏰ ALARMA: ${a.label || 'Recordatorio'}`); a.triggered = true; saveData(); }
-                if (a.time !== timeStr) a.triggered = false;
+                if (a.date === currentDateStr && a.time === timeStr && !a.triggered) { 
+                    triggerAudioAlert(`⏰ ALARMA: ${a.label}`); 
+                    a.triggered = true; 
+                    saveDashboardData(); 
+                }
+                if (a.time !== timeStr || a.date !== currentDateStr) {
+                    a.triggered = false; 
+                }
             });
-            tasks.forEach(t => {
-                if (t.datetime && !t.notified && now.getTime() >= new Date(t.datetime).getTime()) { triggerAudioAlert(`📋 TAREA: ${t.title}`); t.notified = true; saveData(); }
-            });
-            checkThemeRules();
         }, 1000);
 
-        function toggleControl(el) { el.classList.toggle('active'); playBeep(600, 0.05); }
-
+        // --- GESTOR COMPLETO DE ALARMAS CON FECHA Y HORA ---
         function buildAlarmsManager() {
             dynamicBody.innerHTML = `
                 <div class="modal-form">
-                    <label>Hora</label><input type="time" id="newAlarmTime">
-                    <label>Etiqueta</label><input type="text" id="newAlarmLabel" placeholder="Ej. Revisar Base Geotab">
-                    <button class="modal-btn" onclick="addAlarm()">Agregar Alarma</button>
-                </div><div class="items-list" id="modalAlarmsList"></div>`;
-            renderAlarmsList();
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                        <div>
+                            <label>Fecha</label>
+                            <input type="date" id="newAlmDate" value="${chosenSelectedDate}">
+                        </div>
+                        <div>
+                            <label>Hora</label>
+                            <input type="time" id="newAlmTime" value="08:00">
+                        </div>
+                    </div>
+                    <label>Nota de Alerta</label>
+                    <input type="text" id="newAlmLabel" placeholder="Ej. Encendido de Motores">
+                    <button class="modal-btn" onclick="addAlm()">Añadir Alarma Permanente</button>
+                </div>
+                <div class="items-list" id="mAlms"></div>`;
+            renderAlms();
         }
-        function renderAlarmsList() {
-            const cont = document.getElementById('modalAlarmsList'); if(!cont) return; cont.innerHTML = '';
-            alarms.forEach((a, i) => {
-                const div = document.createElement('div'); div.className = 'list-entry';
-                div.innerHTML = `<div class="list-entry-info"><h5>${a.time}</h5><p>${a.label||'Alarma'}</p></div><button class="btn-delete" onclick="alarms.splice(${i},1);saveData();renderAlarmsList();"><iconify-icon icon="fluent:delete-24-filled"></iconify-icon></button>`;
-                cont.appendChild(div);
+        function renderAlms() {
+            const c = document.getElementById('mAlms'); if(!c) return; c.innerHTML = '';
+            if(alarms.length === 0) { c.innerHTML = '<p style="font-size:12px; color:var(--text-secondary); text-align:center;">No hay alertas en cola.</p>'; return; }
+            alarms.forEach((a,i) => { 
+                const d = document.createElement('div'); d.className='list-entry'; 
+                d.innerHTML=`<div><h5>📅 ${a.date} | ⏰ ${a.time} hs</h5><p>${a.label}</p></div><button class="btn-delete" onclick="alarms.splice(${i},1);saveDashboardData();renderAlms();"><iconify-icon icon="fluent:delete-24-filled"></iconify-icon></button>`; 
+                c.appendChild(d); 
             });
         }
-        function addAlarm() { const t = document.getElementById('newAlarmTime').value; if(!t)return; alarms.push({time:t, label:document.getElementById('newAlarmLabel').value, enabled:true, triggered:false}); saveData(); renderAlarmsList(); }
+        function addAlm() { 
+            const d=document.getElementById('newAlmDate').value;
+            const t=document.getElementById('newAlmTime').value;
+            const l=document.getElementById('newAlmLabel').value || 'Alarma'; 
+            if(d && t) { alarms.push({date:d, time:t, label:l, triggered:false}); saveDashboardData(); renderAlms(); } 
+        }
 
+        // --- GESTOR COMPLETO DE TAREAS CON FECHA, HORA Y SINCRONIZACIÓN ---
         function buildTasksManager() {
             dynamicBody.innerHTML = `
                 <div class="modal-form">
-                    <label>Título Tarea</label><input type="text" id="newTaskTitle" placeholder="Ej. Filtro de DT Conciliación">
-                    <label>Alerta</label><input type="datetime-local" id="newTaskDateTime">
-                    <button class="modal-btn" onclick="addTask()">Guardar Tarea</button>
-                </div><div class="items-list" id="modalTasksList"></div>`;
-            renderTasksList();
+                    <label>Descripción del Pendiente</label>
+                    <input type="text" id="newTskText" placeholder="Ej. Patrullaje de perímetro norte">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                        <div>
+                            <label>Fecha Evento</label>
+                            <input type="date" id="newTskDate" value="${chosenSelectedDate}">
+                        </div>
+                        <div>
+                            <label>Hora</label>
+                            <input type="time" id="newTskTime" value="12:00">
+                        </div>
+                    </div>
+                    <button class="modal-btn" onclick="addTsk()">Registrar en Agenda</button>
+                </div>
+                <div class="items-list" id="mTsk"></div>`;
+            renderTsks();
         }
-        function renderTasksList() {
-            const cont = document.getElementById('modalTasksList'); if(!cont) return; cont.innerHTML = '';
-            tasks.forEach((t, i) => {
-                const div = document.createElement('div'); div.className = 'list-entry';
-                div.innerHTML = `<div class="list-entry-info"><h5>${t.title}</h5><p>${t.datetime?new Date(t.datetime).toLocaleString('es-PY'):'Sin alerta'}</p></div><button class="btn-delete" onclick="tasks.splice(${i},1);saveData();renderTasksList();"><iconify-icon icon="fluent:delete-24-filled"></iconify-icon></button>`;
-                cont.appendChild(div);
+        function renderTsks() {
+            const c = document.getElementById('mTsk'); if(!c) return; c.innerHTML = '';
+            if(tasks.length === 0) { c.innerHTML = '<p style="font-size:12px; color:var(--text-secondary); text-align:center;">Agenda vacía.</p>'; return; }
+            tasks.forEach((t,i) => { 
+                const d = document.createElement('div'); d.className='list-entry'; 
+                d.innerHTML=`<div><h5>${t.text}</h5><p>📅 ${t.date} — ⏰ ${t.time} hs</p></div><button class="btn-delete" onclick="tasks.splice(${i},1);saveDashboardData();renderTsks();"><iconify-icon icon="fluent:delete-24-filled"></iconify-icon></button>`; 
+                c.appendChild(d); 
             });
         }
-        function addTask() { const title = document.getElementById('newTaskTitle').value; if(!title)return; tasks.push({title, datetime:document.getElementById('newTaskDateTime').value, notified:false}); saveData(); renderTasksList(); }
-
-        function renderMainTasks() {
-            const tl = document.getElementById('mainTasksTimeline'); if(!tl) return; tl.innerHTML = '';
-            if(tasks.length === 0) { tl.innerHTML = '<div class="tarea-bubble" style="color:var(--text-secondary)">No hay tareas pendientes</div>'; }
-            tasks.slice(-2).forEach(t => { const r = document.createElement('div'); r.className='tarea-row'; r.innerHTML=`<span class="tarea-node"></span><div class="tarea-bubble">${t.title}</div>`; tl.appendChild(r); });
-            const btn = document.createElement('button'); btn.className='btn-add-tarea'; btn.innerHTML=`<iconify-icon icon="fluent:add-circle-16-filled"></iconify-icon> Gestionar`; btn.onclick=(e)=>{e.stopPropagation(); openModal('tareas');}; tl.appendChild(btn);
+        function addTsk() { 
+            const txt = document.getElementById('newTskText').value; 
+            const date = document.getElementById('newTskDate').value;
+            const time = document.getElementById('newTskTime').value;
+            if(txt && date && time) { 
+                tasks.push({text:txt, date:date, time:time}); 
+                chosenSelectedDate = date; 
+                saveDashboardData(); 
+                renderTsks(); 
+            } 
         }
 
-        // --- CALENDARIO ENGINE ---
-        let cDate = new Date(2026, 4, 1);
+        function renderMainTasks() { 
+            const tl = document.getElementById('mainTasksTimeline'); if(!tl) return; tl.innerHTML = ''; 
+            let filteredTasks = tasks.filter(t => t.date === chosenSelectedDate);
+            if(filteredTasks.length === 0){ 
+                tl.innerHTML = `<div class="tarea-bubble" style="color:var(--text-secondary);">Sin tareas para el: ${chosenSelectedDate}</div>`; 
+                return; 
+            } 
+            filteredTasks.forEach(t=>{ 
+                const r=document.createElement('div'); r.className='tarea-row'; 
+                r.innerHTML=`<span class="tarea-node"></span><div class="tarea-bubble"><strong>${t.time} hs</strong> — ${t.text}</div>`; 
+                tl.appendChild(r); 
+            }); 
+        }
+
+        // --- ENGINE DEL TEMA CON CAPACIDAD ANULADORA MANUAL ---
+        function toggleThemeManual() { 
+            userManualThemeState = true; 
+            localStorage.setItem('manual_theme_active', 'true');
+            const cur = document.documentElement.getAttribute('data-theme'); 
+            if(cur==='dark') {
+                document.documentElement.removeAttribute('data-theme'); 
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark'); 
+            }
+        }
+        function toggleControl(el) { el.classList.toggle('active'); playBeep(600, 0.05); }
+
+        // --- CALENDARIO SINCRONIZADO E INTERACTIVO ---
+        let cDate = new Date();
         function renderCalendar() {
             const y = cDate.getFullYear(), m = cDate.getMonth(), daysCont = document.getElementById('calendarDays'); if(!daysCont)return; daysCont.innerHTML = '';
             let fIdx = new Date(y, m, 1).getDay(); fIdx = fIdx === 0 ? 6 : fIdx - 1;
-            const dim = new Date(y, m + 1, 0).getDate(), prevDim = new Date(y, m, 0).getDate();
-            for (let i = fIdx - 1; i >= 0; i--) { const d = document.createElement('div'); d.className = 'day other-month'; d.textContent = prevDim - i; daysCont.appendChild(d); }
-            for (let i = 1; i <= dim; i++) { const d = document.createElement('div'); d.className = 'day'; d.textContent = i; if (i === 18 && m === 4) d.classList.add('selected'); d.addEventListener('click', function(e){ e.stopPropagation(); document.querySelectorAll('.day').forEach(el=>el.classList.remove('selected')); this.classList.add('selected'); }); daysCont.appendChild(d); }
-            while(daysCont.children.length < 42) { const d = document.createElement('div'); d.className = 'day other-month'; d.textContent = daysCont.children.length - dim - fIdx + 1; daysCont.appendChild(d); }
-            const titleEl = document.querySelector('.calendar-title'); if(titleEl) titleEl.textContent = `${['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'][m]}, ${y}`;
+            const dim = new Date(y, m + 1, 0).getDate();
+            
+            for (let i = 0; i < fIdx; i++) { const d = document.createElement('div'); d.className = 'day other-month'; daysCont.appendChild(d); }
+            
+            for (let i = 1; i <= dim; i++) { 
+                const d = document.createElement('div'); d.className = 'day'; d.textContent = i; 
+                let buildFullStr = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                
+                let hasTasksOnThisDate = tasks.some(t => t.date === buildFullStr);
+                if(hasTasksOnThisDate) d.classList.add('has-tasks');
+                
+                if(buildFullStr === chosenSelectedDate) {
+                    d.classList.add('selected');
+                }
+                
+                d.onclick = (e) => {
+                    e.stopPropagation();
+                    chosenSelectedDate = buildFullStr;
+                    renderCalendar();
+                    renderMainTasks();
+                };
+                
+                daysCont.appendChild(d); 
+            }
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']; 
+            document.getElementById('calDisplayTitle').textContent = `${monthNames[m]}, ${y}`;
         }
         function previousMonth() { cDate.setMonth(cDate.getMonth() - 1); renderCalendar(); }
         function nextMonth() { cDate.setMonth(cDate.getMonth() + 1); renderCalendar(); }
 
         document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
-
-        renderCalendar(); renderMainTasks();
+        
+        renderCalendar(); 
+        renderMainTasks();
+        rotateParaguayNews();
     </script>
 </body>
 </html>
