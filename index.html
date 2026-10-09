@@ -202,7 +202,7 @@
             <div class="card card-calendario" onclick="event.stopPropagation()">
                 <div class="calendar-header">
                     <button onclick="previousMonth()"><iconify-icon icon="fluent:chevron-left-16-filled"></iconify-icon></button>
-                    <div class="calendar-title" id="calDisplayTitle">Mayo, 2026</div>
+                    <div class="calendar-title" id="calDisplayTitle">Octubre, 2026</div>
                     <button onclick="nextMonth()"><iconify-icon icon="fluent:chevron-right-16-filled"></iconify-icon></button>
                 </div>
                 <div class="weekdays"><div>Lu</div><div>Ma</div><div>Mi</div><div>Ju</div><div>Vi</div><div>Sá</div><div>Do</div></div>
@@ -280,8 +280,8 @@
                 <div class="modal-form">
                     <label>Nombre Identificador (ej. Sala de Espera, Depósito)</label>
                     <input type="text" id="newCamNameInput" placeholder="Identificador de la zona">
-                    <label>Código Peer de la Cámara (5 letras)</label>
-                    <input type="text" id="newCamCodeInput" class="cam-code-input" maxlength="5" placeholder="PATIO">
+                    <label>Código Peer de la Cámara (letras/números)</label>
+                    <input type="text" id="newCamCodeInput" class="cam-code-input" maxlength="10" placeholder="PATIO">
                     <button class="modal-btn" style="background:#34c759;" onclick="addNewCameraDevice()">+ Registrar Cámara</button>
                 </div>
                 <div style="margin-top: 24px;">
@@ -293,7 +293,20 @@
     </div>
 
     <script>
-        // --- PITIDOS SUTILES REGULARES DE BOTONES ---
+        function sanitizeId(str) {
+            return (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        const peerIceConfig = {
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' },
+                    { urls: 'stun:stun2.l.google.com:19302' }
+                ]
+            }
+        };
+
         function playBeepUi(f=600, d=0.05) {
             try {
                 let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
@@ -304,12 +317,10 @@
             } catch(e){}
         }
 
-        // --- SISTEMA UNIFICADO DE AUDIO AVANZADO (ALARMAS + EVENTOS AGENDA) ---
         let alarmAudioCtx = null;
         let alarmInterval = null;
         let isAlarmRunning = false;
         
-        // Función generadora de notas harmónicas para emular "Morning Joy" sin dependencias de red externa
         function playMorningJoyNote(freq, startTime, duration) {
             if (!alarmAudioCtx) return;
             let o = alarmAudioCtx.createOscillator();
@@ -325,7 +336,6 @@
             o.stop(startTime + duration);
         }
 
-        // Pitido estridente industrial continuo (Sawtooth) exclusivo para los Eventos de la Agenda
         function playAgendaEstridenteBeep(f=880, d=0.40) {
             try {
                 if(!alarmAudioCtx) alarmAudioCtx = new(window.AudioContext || window.webkitAudioContext)();
@@ -347,22 +357,19 @@
             isAlarmRunning = true;
 
             if (mode === 'agenda') {
-                // Patrón de Doble Pitido Estridente Continuo para la Agenda
                 alarmInterval = setInterval(() => { 
                     if (!isAlarmRunning) return;
                     playAgendaEstridenteBeep(980, 0.35); 
                     setTimeout(() => { if (isAlarmRunning) playAgendaEstridenteBeep(850, 0.25); }, 400); 
                 }, 1200);
             } else {
-                // Melodía Flautada Estilo Reloj Despertador "Morning Joy" para las Alarmas
                 alarmInterval = setInterval(() => {
                     if (!isAlarmRunning) return;
                     let now = alarmAudioCtx.currentTime;
-                    // Secuencia melódica cíclica ascendente brillante e inspiradora
-                    playMorningJoyNote(523.25, now, 0.25);       // C5
-                    playMorningJoyNote(659.25, now + 0.2, 0.25); // E5
-                    playMorningJoyNote(783.99, now + 0.4, 0.25); // G5
-                    playMorningJoyNote(1046.50, now + 0.6, 0.4); // C6
+                    playMorningJoyNote(523.25, now, 0.25);
+                    playMorningJoyNote(659.25, now + 0.2, 0.25);
+                    playMorningJoyNote(783.99, now + 0.4, 0.25);
+                    playMorningJoyNote(1046.50, now + 0.6, 0.4);
                 }, 1400);
             }
         }
@@ -373,7 +380,6 @@
             if(alarmInterval) clearInterval(alarmInterval); 
         }
 
-        // --- TICKER DINÁMICO DE NOTICIAS DE PARAGUAY ---
         const paraguayNews = [
             "Dirección de Meteorología prevé jornadas cálidas con humedad elevada en Central.",
             "ANDE continúa trabajos de mantenimiento preventivo en líneas de media tensión.",
@@ -394,17 +400,25 @@
         }
         setInterval(rotateParaguayNews, 5000);
 
-        // --- AUTOMATIZACIÓN DEL CARRUSEL (SLIDES) ---
         const track = document.getElementById('carouselTrack');
         let currentSlide = 0;
-        function moveCarousel(idx) { 
+        let carouselTimerHandle = null;
+
+        function startCarouselAutoTimer() {
+            if (carouselTimerHandle) clearInterval(carouselTimerHandle);
+            carouselTimerHandle = setInterval(() => {
+                if(track) moveCarousel((currentSlide + 1) % 3, false);
+            }, 7000);
+        }
+
+        function moveCarousel(idx, userInitiated = true) { 
             currentSlide = idx; 
             if(track) track.style.transform = `translateX(-${idx * 33.333}%)`; 
             document.querySelectorAll('.sistema-dots span').forEach((d,i)=>d.classList.toggle('active', i===idx)); 
+            if (userInitiated) startCarouselAutoTimer();
         }
-        setInterval(() => { if(track) moveCarousel((currentSlide+1)%3); }, 7000);
+        startCarouselAutoTimer();
 
-        // --- CORE WEBRTC MULTI-CAM SIMULTÁNEO ---
         let peerInstance = null;
         let activeDataConns = [];
         let activeCalls = [];
@@ -418,34 +432,39 @@
                 connectSurveillanceFlow();
                 return;
             }
-            peerInstance = new Peer();
+            
+            peerInstance = new Peer(peerIceConfig);
+
             peerInstance.on('open', (id) => {
-                console.log('Visor ID WebRTC:', id);
+                console.log('Visor ID WebRTC registrado:', id);
                 connectSurveillanceFlow();
             });
+
             peerInstance.on('call', (call) => {
                 activeCalls.push(call);
                 call.answer();
                 call.on('stream', (remoteStream) => {
-                    const callerCode = call.peer.replace('secucam-', '').toLowerCase();
+                    const callerCleanCode = sanitizeId(call.peer.replace('secucam-', ''));
                     
                     if (isGridView) {
-                        const box = document.getElementById(`gridBox-${callerCode}`);
+                        const box = document.getElementById(`gridBox-${callerCleanCode}`);
                         if (box) {
                             const video = box.querySelector('video');
                             video.srcObject = remoteStream;
                             video.style.display = 'block';
-                            const statusTxt = document.getElementById(`gridStatus-${callerCode}`);
+                            video.play().catch(e => console.log("Autoplay:", e));
+                            const statusTxt = document.getElementById(`gridStatus-${callerCleanCode}`);
                             if(statusTxt) statusTxt.style.display = 'none';
                         }
                     } else {
                         const activeDevice = cameraDevices.find(c => c.id === selectedCamId);
-                        if (activeDevice && activeDevice.code.toLowerCase() === callerCode) {
+                        if (activeDevice && sanitizeId(activeDevice.code) === callerCleanCode) {
                             const video = document.getElementById('remoteWebVideo');
                             const placeholder = document.getElementById('videoCanvasPlaceholder');
                             if (video) {
                                 video.srcObject = remoteStream;
                                 video.style.display = 'block';
+                                video.play().catch(e => console.log("Autoplay:", e));
                                 if (placeholder) placeholder.style.display = 'none';
                                 updateCamStatusText("Transmisión en Vivo Operativa");
                             }
@@ -453,12 +472,21 @@
                     }
                 });
             });
+
+            peerInstance.on('connection', (conn) => {
+                activeDataConns.push(conn);
+                conn.on('data', (data) => {
+                    if (data && data.type === 'alert') {
+                        triggerAudioAlert(`🚨 MOVIMIENTO: ${data.message}`, 'alarma');
+                    }
+                });
+            });
         }
 
         function closeAllSurveillanceConnections() {
-            activeDataConns.forEach(c => { if(c.open) c.close(); });
+            activeDataConns.forEach(c => { if(c && c.open) c.close(); });
             activeDataConns = [];
-            activeCalls.forEach(c => c.close());
+            activeCalls.forEach(c => { if(c) c.close(); });
             activeCalls = [];
         }
 
@@ -475,10 +503,11 @@
                 }
                 let gridHtml = '';
                 cameraDevices.forEach(cam => {
+                    const cleanCode = sanitizeId(cam.code);
                     gridHtml += `
-                        <div class="grid-cam-box" id="gridBox-${cam.code.toLowerCase()}">
+                        <div class="grid-cam-box" id="gridBox-${cleanCode}">
                             <div class="grid-cam-label">${cam.name}</div>
-                            <div class="grid-cam-status" id="gridStatus-${cam.code.toLowerCase()}">Conectando P2P...</div>
+                            <div class="grid-cam-status" id="gridStatus-${cleanCode}">Conectando P2P...</div>
                             <video autoplay playsinline muted></video>
                         </div>`;
                 });
@@ -489,7 +518,7 @@
                 const nameDisplay = activeDevice ? activeDevice.name : 'SecuCam';
                 
                 viewport.innerHTML = `
-                    <video id="remoteWebVideo" autoplay playsinline></video>
+                    <video id="remoteWebVideo" autoplay playsinline muted></video>
                     <div class="video-placeholder" id="videoCanvasPlaceholder">
                         <iconify-icon icon="fluent:video-clip-24-filled" style="font-size:44px; margin-bottom:12px; color:#ff9500;"></iconify-icon>
                         <span id="videoStatusTxt">Sincronizando canal...</span>
@@ -504,12 +533,13 @@
 
             if (isGridView) {
                 cameraDevices.forEach(cam => {
-                    const targetPeerId = "secucam-" + cam.code.toLowerCase().trim();
+                    const cleanCode = sanitizeId(cam.code);
+                    const targetPeerId = "secucam-" + cleanCode;
                     const conn = peerInstance.connect(targetPeerId, { reliable: true });
                     activeDataConns.push(conn);
 
                     conn.on('open', () => {
-                        const statusTxt = document.getElementById(`gridStatus-${cam.code.toLowerCase()}`);
+                        const statusTxt = document.getElementById(`gridStatus-${cleanCode}`);
                         if(statusTxt) statusTxt.textContent = "Enlazado. Solicitando video...";
                         conn.send({ type: 'solicitud-stream', visorId: peerInstance.id });
                     });
@@ -517,7 +547,7 @@
                         if (data && data.type === 'alert') triggerAudioAlert(`🚨 MOVIMIENTO [${cam.name}]: ${data.message}`, 'alarma');
                     });
                     conn.on('error', () => {
-                        const statusTxt = document.getElementById(`gridStatus-${cam.code.toLowerCase()}`);
+                        const statusTxt = document.getElementById(`gridStatus-${cleanCode}`);
                         if(statusTxt) statusTxt.textContent = "Cámara Desconectada";
                     });
                 });
@@ -527,7 +557,8 @@
                     updateCamStatusText("No hay cámaras configuradas. Presioná el engranaje superior.");
                     return;
                 }
-                const targetPeerId = "secucam-" + activeDevice.code.toLowerCase().trim();
+                const cleanCode = sanitizeId(activeDevice.code);
+                const targetPeerId = "secucam-" + cleanCode;
                 updateCamStatusText(`Conectando a [${activeDevice.name}]...`);
 
                 const conn = peerInstance.connect(targetPeerId, { reliable: true });
@@ -540,7 +571,7 @@
                 conn.on('data', (data) => {
                     if (data && data.type === 'alert') triggerAudioAlert(`🚨 MOVIMIENTO: ${data.message}`, 'alarma');
                 });
-                conn.on('error', (err) => { updateCamStatusText("Dispositivo offline o código incorrecto."); });
+                conn.on('error', () => { updateCamStatusText("Dispositivo offline o código incorrecto."); });
             }
         }
 
@@ -581,7 +612,7 @@
 
         function sendTorchCommand(e) {
             e.stopPropagation(); const btn = document.getElementById('btnTorch'); btn.classList.toggle('active'); const status = btn.classList.contains('active');
-            activeDataConns.forEach(conn => { if(conn.open) conn.send({ type: 'torch', value: status }); });
+            activeDataConns.forEach(conn => { if(conn && conn.open) conn.send({ type: 'torch', value: status }); });
             playBeepUi(status ? 900 : 600, 0.05);
         }
         function toggleAudioTrack(e) {
@@ -592,7 +623,6 @@
         }
         function executeZoom(val, e) { e.stopPropagation(); currentZoom = Math.max(1, Math.min(4, currentZoom + val)); const video = document.getElementById('remoteWebVideo'); if(video) video.style.transform = `scale(${currentZoom})`; playBeepUi(700, 0.03); }
 
-        // --- SISTEMA DE VENTANAS MODALES ---
         const modalOverlay = document.getElementById('modalOverlay');
         const modalTitle = document.getElementById('modalTitle');
         const dynamicBody = document.getElementById('modalDynamicBody');
@@ -654,10 +684,11 @@
         
         function addNewCameraDevice() {
             const name = document.getElementById('newCamNameInput').value.trim();
-            const code = document.getElementById('newCamCodeInput').value.trim().toUpperCase();
-            if(!name || code.length < 3) return alert("Completá los campos correctamente.");
+            const rawCode = document.getElementById('newCamCodeInput').value.trim();
+            const cleanCode = sanitizeId(rawCode);
+            if(!name || cleanCode.length < 2) return alert("Completá los campos correctamente.");
 
-            const item = { id: 'cam_' + Date.now(), name, code };
+            const item = { id: 'cam_' + Date.now(), name, code: cleanCode.toUpperCase() };
             cameraDevices.push(item);
             selectedCamId = item.id;
             localStorage.setItem('secucam_devs', JSON.stringify(cameraDevices));
@@ -677,9 +708,10 @@
             if(cameraDevices.length === 0) { container.innerHTML = '<p style="font-size:12px; color:#8a8a99; text-align:center;">Ninguna cámara registrada en este nodo.</p>'; return; }
             cameraDevices.forEach(cam => {
                 const active = cam.id === selectedCamId;
+                const cleanCode = sanitizeId(cam.code);
                 const div = document.createElement('div'); div.className = `cam-item ${active ? 'selected' : ''}`;
                 div.onclick = () => { selectedCamId = cam.id; localStorage.setItem('secucam_active_id', selectedCamId); isGridView = false; renderRegisteredCameras(); cameraSettingsPanel.classList.remove('active'); initSurveillanceView(); };
-                div.innerHTML = `<div class="cam-item-info"><h5>${cam.name}</h5><p>ID Peer P2P: secucam-${cam.code.toLowerCase()}</p></div><button class="btn-delete" onclick="deleteCamera('${cam.id}', event)"><iconify-icon icon="fluent:delete-16-filled"></iconify-icon></button>`;
+                div.innerHTML = `<div class="cam-item-info"><h5>${cam.name}</h5><p>ID Peer P2P: secucam-${cleanCode}</p></div><button class="btn-delete" onclick="deleteCamera('${cam.id}', event)"><iconify-icon icon="fluent:delete-16-filled"></iconify-icon></button>`;
                 container.appendChild(div);
             });
         }
@@ -692,7 +724,6 @@
             renderRegisteredCameras(); isGridView = false; initSurveillanceView();
         }
 
-        // --- PERSISTENCIA (ALARMAS Y AGENDA DE TAREAS) ---
         let alarms = JSON.parse(localStorage.getItem('sys_alarms')) || [];
         let tasks = JSON.parse(localStorage.getItem('sys_tasks')) || [];
         let chosenSelectedDate = new Date().toISOString().split('T')[0];
@@ -704,7 +735,6 @@
             renderCalendar();
         }
 
-        // --- ENGINE TIEMPO REAL CON AUTO TEMA ---
         let userManualThemeState = localStorage.getItem('manual_theme_active') === 'true';
 
         setInterval(() => {
@@ -724,7 +754,6 @@
 
             const currentDateStr = now.toISOString().split('T')[0];
             
-            // Verificación cruzada exacta de Alarmas (Reproduce "Morning Joy")
             alarms.forEach(a => {
                 if (a.date === currentDateStr && a.time === timeStr && !a.triggered) { 
                     triggerAudioAlert(`⏰ ALARMA: ${a.label}`, 'alarma'); 
@@ -734,7 +763,6 @@
                 if (a.time !== timeStr || a.date !== currentDateStr) a.triggered = false;
             });
 
-            // Verificación cruzada exacta de Eventos Agendados (Reproduce el patrón Estridente)
             tasks.forEach(t => {
                 if (t.date === currentDateStr && t.time === timeStr && !t.triggered) {
                     triggerAudioAlert(`📅 AGENDA: ${t.text}`, 'agenda');
@@ -746,7 +774,6 @@
 
         }, 1000);
 
-        // --- CONTROLADORES DE ALARMAS ---
         function buildAlarmsManager() {
             dynamicBody.innerHTML = `
                 <div class="modal-form">
@@ -775,7 +802,6 @@
             if(d && t) { alarms.push({date:d, time:t, label:l, triggered:false}); saveDashboardData(); renderAlms(); } 
         }
 
-        // --- CONTROLADORES DE AGENDA / EVENTOS ---
         function buildTasksManager() {
             dynamicBody.innerHTML = `
                 <div class="modal-form">
@@ -815,7 +841,6 @@
             }); 
         }
 
-        // --- CONTROLES MANUALES ---
         function toggleThemeManual() { 
             userManualThemeState = true; localStorage.setItem('manual_theme_active', 'true');
             const cur = document.documentElement.getAttribute('data-theme'); 
@@ -824,7 +849,6 @@
         }
         function toggleControl(el) { el.classList.toggle('active'); playBeepUi(600, 0.05); }
 
-        // --- RENDER DE MATRIZ DE CALENDARIO COMPLETA ---
         let cDate = new Date();
         function renderCalendar() {
             const y = cDate.getFullYear(), m = cDate.getMonth(), daysCont = document.getElementById('calendarDays'); if(!daysCont)return; daysCont.innerHTML = '';
